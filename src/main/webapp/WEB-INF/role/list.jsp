@@ -14,7 +14,9 @@
         <h2>Role list</h2>
 
         <p class="text-end">
-            <button class="btn btn-success" onclick="showCreatePopup()">Add New Role</button>
+            <a href="<c:url value="role">
+                   <c:param name="view" value="create"/>
+               </c:url>" class="btn btn-success">Add New</a>
         </p>
 
         <table class="table table-bordered table-hover text-center">
@@ -22,6 +24,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Description</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -37,11 +40,21 @@
                             <tr>
                                 <td><c:out value="${role.role_id}"/></td>
                                 <td><c:out value="${role.role_name}"/></td>
+                                <td><c:out value="${role.description}"/></td>
 
                                 <td>
-                                    <button type="button" class="btn btn-primary" onclick="showEditPopup(${role.role_id}, '<c:out value="${role.role_name}"/>')">
-                                        Edit Name
-                                    </button>
+                                    <a href="<c:url value="role">
+                                           <c:param name="view" value="edit"/>
+                                           <c:param name="id" value="${role.role_id}"/>
+                                       </c:url>" class="btn btn-primary">
+                                        Edit
+                                    </a>
+                                    <a href="<c:url value="role">
+                                           <c:param name="view" value="remove"/>
+                                           <c:param name="id" value="${role.role_id}"/>
+                                       </c:url>" class="btn btn-danger">
+                                        Delete
+                                    </a>                                       
                                 </td>
                             </tr>
                         </c:forEach>

@@ -92,21 +92,23 @@ public class RoleServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        /*String action = request.getParameter("action");
+        String action = request.getParameter("action");
 
         boolean passValidation = true;
         if (action != null && !action.isEmpty()) {
 
             if (action.equalsIgnoreCase("create")) {
-                String name = request.getParameter("name");
+                String name = request.getParameter("role_name");
+                String description = request.getParameter("description");
 
 //validate
-                if (!validateString(name)) {
+                if (!validateString(name)
+                        || !validateString(description)) {
                     passValidation = false;
                 }
 //end
 
-                if (roleDAO.create(name) >= 1) {
+                if (roleDAO.create(name, action) >= 1) {
 
                 } else {
                     passValidation = false;
@@ -115,6 +117,7 @@ public class RoleServlet extends HttpServlet {
             } else if (action.equalsIgnoreCase("edit")) {
                 int id;
                 String name = request.getParameter("name");
+                String description = request.getParameter("description");
 
                 try {
                     id = Integer.parseInt(request.getParameter("id"));
@@ -125,12 +128,46 @@ public class RoleServlet extends HttpServlet {
                 }
 
 //validate
-                if (!validateString(name) || !validateInteger(id, false, false, true)) {
+                if (!validateString(name)
+                        || !validateString(description)
+                        || !validateInteger(id, false, false, true)) {
                     passValidation = false;
                 }
 //end
 
-                int checkError = roleDAO.update(id, name);
+                int checkError = roleDAO.edit(id, name, description);
+
+                if (checkError >= 1) {
+
+                } else {
+                    if (checkError - Constants.DUPLICATE_KEY == 0) {                //check trung code/key
+                        System.err.println("DUPLICATE_KEY");
+                    } else if (checkError - Constants.FOREIGN_KEY_VIOLATION == 0) {
+                        System.err.println("FOREIGN_KEY_VIOLATION");
+                    } else if (checkError - Constants.NULL_INSERT_VIOLATION == 0) {
+                        System.err.println("NULL_INSERT_VIOLATION");
+                    }
+
+                    passValidation = false;
+                }
+            }  else if (action.equalsIgnoreCase("delete")) {
+                int id;
+
+                try {
+                    id = Integer.parseInt(request.getParameter("id"));
+                } catch (NumberFormatException e) {
+                    id = -1;
+
+                    passValidation = false;
+                }
+
+//validate
+                if (!validateInteger(id, false, false, true)) {
+                    passValidation = false;
+                }
+//end
+
+                int checkError = roleDAO.delete(id);
 
                 if (checkError >= 1) {
 
@@ -149,7 +186,7 @@ public class RoleServlet extends HttpServlet {
         }
 
         response.sendRedirect(request.getContextPath() + "/role?" + "status=" + (passValidation ? "success" : "fail") + "&lastAction=" + addEDtoEverything(action));
-    */
+    
     }
 
     /**

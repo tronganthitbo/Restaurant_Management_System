@@ -30,7 +30,7 @@ public class RoleDAO extends DBContext {
         try {
             String query = "SELECT role_id, role_name, description, status\n"
                     + "FROM     role\n"
-                    + "WHERE  (LOWER(status) <> LOWER(N'Deleted'))\n"
+                    + "WHERE  (LOWER(status) = LOWER(N'Active'))\n"
                     + "ORDER BY role_id";
 
             ResultSet rs = this.executeSelectionQuery(query, null);
@@ -59,7 +59,7 @@ public class RoleDAO extends DBContext {
         try {
             String query = "SELECT role_id, role_name, description, status\n"
                     + "FROM     role\n"
-                    + "WHERE  (LOWER(status) <> LOWER(N'Deleted'))\n"
+                    + "WHERE  (LOWER(status) = LOWER(N'Active'))\n"
                     + "ORDER BY role_id\n"
                     + "OFFSET ? ROWS \n"
                     + "FETCH NEXT ? ROWS ONLY;";
@@ -88,7 +88,7 @@ public class RoleDAO extends DBContext {
         try {
             String query = "SELECT role_id, role_name, description, status\n"
                     + "FROM     role\n"
-                    + "WHERE  (role_id = ? and LOWER(status) <> LOWER(N'Deleted'))\n";
+                    + "WHERE  (role_id = ? and LOWER(status) = LOWER(N'Active'))\n";
 
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{id});
 
@@ -109,12 +109,12 @@ public class RoleDAO extends DBContext {
         return null;
     }
 
-    public int create(String role_name, String description, String status) {
+    public int create(String role_name, String description) {
         try {
             String query = "INSERT INTO role (role_name, description, status)\n"
                     + "VALUES (?, ?, ?)";
 
-            return this.executeQuery(query, new Object[]{role_name, description, status});
+            return this.executeQuery(query, new Object[]{role_name, description, "Active"});
 
         } catch (SQLException ex) {
 
@@ -128,14 +128,14 @@ public class RoleDAO extends DBContext {
         return -1;
     }
 
-    public int update(int role_id, String role_name, String description, String status) {
+    public int edit(int role_id, String role_name, String description) {
         try {
 
             String query = "UPDATE role\n"
-                    + "SET role_name = ?, description = ?, status = ?\n"
+                    + "SET role_name = ?, description = ?\n"
                     + "WHERE  (role_id = ?)";
 
-            return this.executeQuery(query, new Object[]{role_name, description, status, role_id});
+            return this.executeQuery(query, new Object[]{role_name, description, role_id});
 
         } catch (SQLException ex) {
 
@@ -149,7 +149,7 @@ public class RoleDAO extends DBContext {
         return -1;
     }
     
-    public int remove(int role_id) {
+    public int delete(int role_id) {
         try {
             String query = "UPDATE role\n"
                     + "SET status = 'Deleted'\n"
