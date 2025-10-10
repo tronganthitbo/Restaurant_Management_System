@@ -30,7 +30,8 @@ public class RoleDAO extends DBContext {
         try {
             String query = "SELECT role_id, role_name, description, status\n"
                     + "FROM     role\n"
-                    + "ORDER BY role_id\n";
+                    + "WHERE  (LOWER(status) <> LOWER(N'Deleted'))\n"
+                    + "ORDER BY role_id";
 
             ResultSet rs = this.executeSelectionQuery(query, null);
 
@@ -58,6 +59,7 @@ public class RoleDAO extends DBContext {
         try {
             String query = "SELECT role_id, role_name, description, status\n"
                     + "FROM     role\n"
+                    + "WHERE  (LOWER(status) <> LOWER(N'Deleted'))\n"
                     + "ORDER BY role_id\n"
                     + "OFFSET ? ROWS \n"
                     + "FETCH NEXT ? ROWS ONLY;";
@@ -86,7 +88,7 @@ public class RoleDAO extends DBContext {
         try {
             String query = "SELECT role_id, role_name, description, status\n"
                     + "FROM     role\n"
-                    + "WHERE  (role_id = ?)\n";
+                    + "WHERE  (role_id = ? and LOWER(status) <> LOWER(N'Deleted'))\n";
 
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{id});
 
@@ -143,6 +145,20 @@ public class RoleDAO extends DBContext {
             }
 
             Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+    
+    public int remove(int role_id) {
+        try {
+            String query = "UPDATE role\n"
+                    + "SET status = 'Deleted'\n"
+                    + "WHERE  (role_id = ?)";
+
+            return this.executeQuery(query, new Object[]{role_id});
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PromotionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
     }
