@@ -63,7 +63,7 @@
                             </td>
                             <td>
                                 <button class="btn btn-success" type="submit" name="action" value="edit">Save</button>
-                                <a class="btn btn-outline-dark" href="<c:url value="Role"/>">Cancel</a>
+                                <a class="btn btn-outline-dark" href="<c:url value="role"/>">Cancel</a>
                             </td>
                         </tr>
                     </table>
@@ -71,7 +71,7 @@
             </c:when>
             <c:otherwise>
                 <h2 class="mt-5">Not found the Role which id <c:out value="${param.id}"/>. Please check the information.</h2>
-                <a class="btn btn-outline-dark" href="<c:url value="Role"/>">Back</a>
+                <a class="btn btn-outline-dark" href="<c:url value="role"/>">Back</a>
             </c:otherwise>
         </c:choose>
     </div>

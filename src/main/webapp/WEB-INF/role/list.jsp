@@ -49,12 +49,9 @@
                                        </c:url>" class="btn btn-primary">
                                         Edit
                                     </a>
-                                    <a href="<c:url value="role">
-                                           <c:param name="view" value="delete"/>
-                                           <c:param name="id" value="${role.role_id}"/>
-                                       </c:url>" class="btn btn-danger">
+                                    <button type="button" class="btn btn-danger" onclick="showDeletePopup(${role.role_id})">
                                         Delete
-                                    </a>                                       
+                                    </button>        
                                 </td>
                             </tr>
                         </c:forEach>
@@ -92,60 +89,22 @@
     </div>
 </main>
 
-<div class="modal" id="createPopup" tabindex="-1">
+<div class="modal" id="deletePopup" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add New Role</h5>
+                <h5 class="modal-title">Confirm Deletion</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="post" action="<c:url value="role"/>">
-                <div class="modal-body">
-                    <table class="table table-borderless">
-                        <tr>
-                            <th>
-                                <label class="form-label" for="name">Name</label>
-                            </th>
-                            <td>
-                                <input type="text" class="form-control" name="name" id="name">
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" name="action" value="create" class="btn btn-primary">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal" id="editPopup" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Role Name</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-body text-danger">
+                <h6 id="idForDeletePopup">Are you sure you want to delete this role?</h6>
+                <small class="text-muted">This action cannot be undone.</small>
             </div>
             <form method="post" action="<c:url value="role"/>">
-                <div class="modal-body">
-                    <table class="table table-borderless">
-                        <tr>
-                            <th>
-                                <label class="form-label" for="nameEdit">Name</label>
-                            </th>
-                            <td>
-                                <input type="text" class="form-control" name="name" id="nameEdit" value="">
-                            </td>
-                        </tr>
-                        <input type="hidden" name="id" id="idEditName" value="">
-                    </table>
-                </div>
-
+                <input type="hidden" id="hiddenInputIdDelete" name="id" value="">
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" name="action" value="edit" class="btn btn-primary">Save</button>
+                    <button type="submit" name="action" value="delete" class="btn btn-danger">Delete</button>
                 </div>
             </form>
         </div>
@@ -153,19 +112,13 @@
 </div>
 
 <script>
-    function showCreatePopup() {
-        var myModal = new bootstrap.Modal(document.getElementById('createPopup'));
-        myModal.show();
-    }
-
-    function showEditPopup(id, name) {
-        document.getElementById("idEditName").value = id;
-        document.getElementById("nameEdit").value = name;
-        var myModal = new bootstrap.Modal(document.getElementById('editPopup'));
+    function showDeletePopup(id) {
+        document.getElementById("hiddenInputIdDelete").value = id;
+        document.getElementById("idForDeletePopup").textContent = "Are you sure you want to delete the role with id = " + id + "?";
+        var myModal = new bootstrap.Modal(document.getElementById('deletePopup'));
         myModal.show();
     }
 </script>
-
 
 <c:if  test="${not empty param.status}">
     <div class="modal" id="exampleModal" tabindex="-1">
