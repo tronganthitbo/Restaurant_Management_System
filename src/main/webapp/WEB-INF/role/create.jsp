@@ -34,7 +34,7 @@
                         <label for="description">Description</label>
                     </th>
                     <td>
-                        <input type="text" name="description" id="description" class="form-control" required>
+                        <input type="text" name="description" id="description" class="form-control">
                     </td>
                 </tr>
 

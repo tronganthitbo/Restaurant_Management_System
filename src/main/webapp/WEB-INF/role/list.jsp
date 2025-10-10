@@ -50,7 +50,7 @@
                                         Edit
                                     </a>
                                     <a href="<c:url value="role">
-                                           <c:param name="view" value="remove"/>
+                                           <c:param name="view" value="delete"/>
                                            <c:param name="id" value="${role.role_id}"/>
                                        </c:url>" class="btn btn-danger">
                                         Delete

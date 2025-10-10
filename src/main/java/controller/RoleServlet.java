@@ -66,6 +66,29 @@ public class RoleServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String namepage = "";
+        String view = request.getParameter("view");
+
+        if (!validateString(view)) {
+            namepage = "list";
+        } else if (view.equalsIgnoreCase("create")) {
+            namepage = "create";
+        } else if (view.equalsIgnoreCase("edit")) {
+            namepage = "edit";
+
+            int id;
+
+            try {
+                id = Integer.parseInt(request.getParameter("id"));
+            } catch (NumberFormatException e) {
+                id = -1;
+            }
+
+            request.setAttribute("currentRole", roleDAO.getElementByID(id));
+        } else if (view.equalsIgnoreCase("delete")) {
+            namepage = "delete";
+        }
+
         int page;
         int totalPages = getTotalPages(roleDAO.countItem());
 
@@ -74,11 +97,11 @@ public class RoleServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             page = 1;
         }
-        
+
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("rolesList", roleDAO.getAll(page));
-        
-        request.getRequestDispatcher("/WEB-INF/role/list.jsp").forward(request, response);
+
+        request.getRequestDispatcher("/WEB-INF/role/" + namepage + ".jsp").forward(request, response);
     }
 
     /**
@@ -102,14 +125,12 @@ public class RoleServlet extends HttpServlet {
                 String description = request.getParameter("description");
 
 //validate
-                if (!validateString(name)
-                        || !validateString(description)) {
+                if (!validateString(name)) {
                     passValidation = false;
                 }
 //end
 
-                if (roleDAO.create(name, action) >= 1) {
-
+                if (roleDAO.create(name, description) >= 1) {
                 } else {
                     passValidation = false;
                 }
@@ -129,7 +150,6 @@ public class RoleServlet extends HttpServlet {
 
 //validate
                 if (!validateString(name)
-                        || !validateString(description)
                         || !validateInteger(id, false, false, true)) {
                     passValidation = false;
                 }
@@ -150,7 +170,7 @@ public class RoleServlet extends HttpServlet {
 
                     passValidation = false;
                 }
-            }  else if (action.equalsIgnoreCase("delete")) {
+            } else if (action.equalsIgnoreCase("delete")) {
                 int id;
 
                 try {
@@ -186,7 +206,7 @@ public class RoleServlet extends HttpServlet {
         }
 
         response.sendRedirect(request.getContextPath() + "/role?" + "status=" + (passValidation ? "success" : "fail") + "&lastAction=" + addEDtoEverything(action));
-    
+
     }
 
     /**
