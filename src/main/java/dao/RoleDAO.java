@@ -158,7 +158,7 @@ public class RoleDAO extends DBContext {
             return this.executeQuery(query, new Object[]{role_id});
 
         } catch (SQLException ex) {
-            Logger.getLogger(PromotionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         return -1;
     }

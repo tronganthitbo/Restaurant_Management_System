@@ -92,7 +92,7 @@ public class RoleServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
+        /*String action = request.getParameter("action");
 
         boolean passValidation = true;
         if (action != null && !action.isEmpty()) {
@@ -149,6 +149,7 @@ public class RoleServlet extends HttpServlet {
         }
 
         response.sendRedirect(request.getContextPath() + "/role?" + "status=" + (passValidation ? "success" : "fail") + "&lastAction=" + addEDtoEverything(action));
+    */
     }
 
     /**
