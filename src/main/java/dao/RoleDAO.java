@@ -149,13 +149,13 @@ public class RoleDAO extends DBContext {
         return -1;
     }
     
-    public int delete(int role_id) {
+    public int delete(int id) {
         try {
             String query = "UPDATE role\n"
                     + "SET status = 'Deleted'\n"
                     + "WHERE  (role_id = ?)";
 
-            return this.executeQuery(query, new Object[]{role_id});
+            return this.executeQuery(query, new Object[]{id});
 
         } catch (SQLException ex) {
             
