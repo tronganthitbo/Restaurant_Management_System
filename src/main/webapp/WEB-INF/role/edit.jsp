@@ -36,7 +36,7 @@
                                 <label for="id">ID</label>
                             </th>
                             <td>
-                                <label id="id"><c:out value="${currentRole.role_id}"/></label>
+                                <label id="id"><c:out value="${currentRole.id}"/></label>
                             </td>
                         </tr>
 
@@ -45,7 +45,7 @@
                                 <label for="name">Name</label>
                             </th>
                             <td>
-                                <input type="text" name="name" id="name" value="<c:out value="${currentRole.role_name}"/>" class="form-control" required>
+                                <input type="text" name="name" id="name" value="<c:out value="${currentRole.name}"/>" class="form-control" required>
                             </td>
                         </tr>
 
