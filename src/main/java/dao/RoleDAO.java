@@ -30,7 +30,7 @@ public class RoleDAO extends DBContext {
         try {
             String query = "SELECT role_id, role_name, description, status\n"
                     + "FROM     role\n"
-                    + "WHERE  (LOWER(status) = LOWER(N'Active'))\n"
+                    + "WHERE  (LOWER(status) <> LOWER(N'Deleted'))\n"
                     + "ORDER BY role_id";
 
             ResultSet rs = this.executeSelectionQuery(query, null);
@@ -59,7 +59,7 @@ public class RoleDAO extends DBContext {
         try {
             String query = "SELECT role_id, role_name, description, status\n"
                     + "FROM     role\n"
-                    + "WHERE  (LOWER(status) = LOWER(N'Active'))\n"
+                    + "WHERE  (LOWER(status) <> LOWER(N'Deleted'))\n"
                     + "ORDER BY role_id\n"
                     + "OFFSET ? ROWS \n"
                     + "FETCH NEXT ? ROWS ONLY;";
@@ -88,7 +88,7 @@ public class RoleDAO extends DBContext {
         try {
             String query = "SELECT role_id, role_name, description, status\n"
                     + "FROM     role\n"
-                    + "WHERE  (role_id = ? and LOWER(status) = LOWER(N'Active'))\n";
+                    + "WHERE  (role_id = ? and LOWER(status) <> LOWER(N'Deleted'))\n";
 
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{id});
 
