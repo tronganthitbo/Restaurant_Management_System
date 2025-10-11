@@ -87,7 +87,7 @@ public class TableDAO extends DBContext {
         try {
             String query = "SELECT table_id, table_number, table_capacity, status\n"
                     + "FROM     [table]\n"
-                    + "WHERE  (role_id = ? and  LOWER(status) = LOWER(N'Active'))\n"
+                    + "WHERE  (table_id = ? and  LOWER(status) = LOWER(N'Active'))\n"
                     + "ORDER BY table_id\n";
 
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{id});
@@ -152,8 +152,8 @@ public class TableDAO extends DBContext {
 
     public int delete(int id) {
         try {
-            String query = "UPDATE table\n"
-                    + "SET status = 'Deleted'\n"
+            String query = "UPDATE [table]\n"
+                    + "SET          status = 'Deleted'\n"
                     + "WHERE  (table_id = ?)";
 
             return this.executeQuery(query, new Object[]{id});

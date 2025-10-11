@@ -61,8 +61,10 @@ public class CommonFunction {
         return (int) Math.ceil((double) countItems / Constants.MAX_ELEMENTS_PER_PAGE);
     }
 
-    public static boolean validateString(String str) {
-        return !(str == null || str.isEmpty());
+    public static boolean validateString(String str, int limitLength) {
+        if (limitLength < 0) limitLength = Integer.MAX_VALUE;
+        
+        return !(str == null || str.isEmpty()) && str.length() <= limitLength;
     }
 
     public static boolean validateInteger(int num, boolean allowNegative, boolean allowZero, boolean allowPositive) {

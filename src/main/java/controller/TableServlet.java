@@ -10,7 +10,7 @@ import static constant.CommonFunction.stringConvertDateTime;
 import static constant.CommonFunction.validateInteger;
 import static constant.CommonFunction.validateString;
 import constant.Constants;
-import dao.RoleDAO;
+import dao.TableDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -23,10 +23,10 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Dai Minh Nhu - CE190213
  */
-@WebServlet(name = "RoleServlet", urlPatterns = {"/role"})
-public class RoleServlet extends HttpServlet {
+@WebServlet(name = "TableServlet", urlPatterns = {"/table"})
+public class TableServlet extends HttpServlet {
 
-    RoleDAO roleDAO = new RoleDAO();
+    TableDAO tableDAO = new TableDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -84,13 +84,13 @@ public class RoleServlet extends HttpServlet {
                 id = -1;
             }
 
-            request.setAttribute("currentRole", roleDAO.getElementByID(id));
+            request.setAttribute("currentTable", tableDAO.getElementByID(id));
         } else if (view.equalsIgnoreCase("delete")) {
             namepage = "delete";
         }
 
         int page;
-        int totalPages = getTotalPages(roleDAO.countItem());
+        int totalPages = getTotalPages(tableDAO.countItem());
 
         try {
             page = Integer.parseInt(request.getParameter("page"));
@@ -99,9 +99,9 @@ public class RoleServlet extends HttpServlet {
         }
 
         request.setAttribute("totalPages", totalPages);
-        request.setAttribute("rolesList", roleDAO.getAll(page));
+        request.setAttribute("tablesList", tableDAO.getAll(page));
 
-        request.getRequestDispatcher("/WEB-INF/role/" + namepage + ".jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/table/" + namepage + ".jsp").forward(request, response);
     }
 
     /**
@@ -121,42 +121,62 @@ public class RoleServlet extends HttpServlet {
         if (action != null && !action.isEmpty()) {
 
             if (action.equalsIgnoreCase("create")) {
-                String name = request.getParameter("role_name");
-                String description = request.getParameter("description");
+                String table_number = request.getParameter("number");
+                int table_capacity;
+
+                try {
+                    table_capacity = Integer.parseInt(request.getParameter("table_capacity"));
+                } catch (NumberFormatException e) {
+                    table_capacity = -1;
+
+                    passValidation = false;
+                }
 
 //validate
-                if (!validateString(name, -1)) {
+                if (!validateString(table_number, 10)
+                        || !validateInteger(table_capacity, false, false, true)) {
                     passValidation = false;
                 }
 //end
                 if (passValidation == true) {
-                    if (roleDAO.create(name, description) >= 1) {
+                    if (tableDAO.create(table_number, table_capacity) >= 1) {
                     } else {
                         passValidation = false;
                     }
                 }
 
             } else if (action.equalsIgnoreCase("edit")) {
+
                 int id;
-                String name = request.getParameter("name");
-                String description = request.getParameter("description");
+                String table_number = request.getParameter("number");
+                int table_capacity;
 
                 try {
-                    id = Integer.parseInt(request.getParameter("id"));
+
                 } catch (NumberFormatException e) {
                     id = -1;
 
                     passValidation = false;
                 }
+                try {
+                    id = Integer.parseInt(request.getParameter("id"));
+                    table_capacity = Integer.parseInt(request.getParameter("table_capacity"));
+                } catch (NumberFormatException e) {
+                    id = -1;
+                    table_capacity = -1;
+
+                    passValidation = false;
+                }
 
 //validate
-                if (!validateString(name, -1)
-                        || !validateInteger(id, false, false, true)) {
+                if (!validateInteger(id, false, false, true)
+                        || !validateString(table_number, 10)
+                        || !validateInteger(table_capacity, false, false, true)) {
                     passValidation = false;
                 }
 //end
                 if (passValidation == true) {
-                    int checkError = roleDAO.edit(id, name, description);
+                    int checkError = tableDAO.edit(id, table_number, table_capacity);
 
                     if (checkError >= 1) {
 
@@ -172,6 +192,7 @@ public class RoleServlet extends HttpServlet {
                         passValidation = false;
                     }
                 }
+
             } else if (action.equalsIgnoreCase("delete")) {
                 int id;
 
@@ -188,28 +209,26 @@ public class RoleServlet extends HttpServlet {
                     passValidation = false;
                 }
 //end
-                if (passValidation == true) {
-                    int checkError = roleDAO.delete(id);
 
-                    if (checkError >= 1) {
+                int checkError = tableDAO.delete(id);
 
-                    } else {
-                        if (checkError - Constants.DUPLICATE_KEY == 0) {                //check trung code/key
-                            System.err.println("DUPLICATE_KEY");
-                        } else if (checkError - Constants.FOREIGN_KEY_VIOLATION == 0) {
-                            System.err.println("FOREIGN_KEY_VIOLATION");
-                        } else if (checkError - Constants.NULL_INSERT_VIOLATION == 0) {
-                            System.err.println("NULL_INSERT_VIOLATION");
-                        }
+                if (checkError >= 1) {
 
-                        passValidation = false;
+                } else {
+                    if (checkError - Constants.DUPLICATE_KEY == 0) {                //check trung code/key
+                        System.err.println("DUPLICATE_KEY");
+                    } else if (checkError - Constants.FOREIGN_KEY_VIOLATION == 0) {
+                        System.err.println("FOREIGN_KEY_VIOLATION");
+                    } else if (checkError - Constants.NULL_INSERT_VIOLATION == 0) {
+                        System.err.println("NULL_INSERT_VIOLATION");
                     }
+
+                    passValidation = false;
                 }
             }
         }
 
-        response.sendRedirect(request.getContextPath() + "/role?" + "status=" + (passValidation ? "success" : "fail") + "&lastAction=" + addEDtoEverything(action));
-
+        response.sendRedirect(request.getContextPath() + "/table?" + "status=" + (passValidation ? "success" : "fail") + "&lastAction=" + addEDtoEverything(action));
     }
 
     /**
