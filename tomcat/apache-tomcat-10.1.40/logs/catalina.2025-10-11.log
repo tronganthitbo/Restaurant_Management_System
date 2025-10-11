@@ -669,3 +669,59 @@
 11-Oct-2025 11:03:24.180 INFO [main] org.apache.catalina.core.StandardService.stopInternal Stopping service [Catalina]
 11-Oct-2025 11:03:24.190 INFO [main] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8080"]
 11-Oct-2025 11:03:24.192 INFO [main] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8080"]
+11-Oct-2025 19:18:34.717 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version name:   Apache Tomcat/10.1.40
+11-Oct-2025 19:18:34.721 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Apr 1 2025 17:20:53 UTC
+11-Oct-2025 19:18:34.722 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version number: 10.1.40.0
+11-Oct-2025 19:18:34.722 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Windows 11
+11-Oct-2025 19:18:34.722 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            10.0
+11-Oct-2025 19:18:34.722 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+11-Oct-2025 19:18:34.722 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             C:\Program Files\Java\jdk-11
+11-Oct-2025 19:18:34.722 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           11.0.27+8-LTS-232
+11-Oct-2025 19:18:34.722 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+11-Oct-2025 19:18:34.722 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40
+11-Oct-2025 19:18:34.723 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40
+11-Oct-2025 19:18:34.735 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\conf\logging.properties
+11-Oct-2025 19:18:34.736 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+11-Oct-2025 19:18:34.736 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dhttp.nonProxyHosts=localhost|127.0.0.1|LAPTOP-7ND2K2DN
+11-Oct-2025 19:18:34.736 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+11-Oct-2025 19:18:34.736 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+11-Oct-2025 19:18:34.736 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dsun.io.useCanonCaches=false
+11-Oct-2025 19:18:34.736 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang=ALL-UNNAMED
+11-Oct-2025 19:18:34.737 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang.reflect=ALL-UNNAMED
+11-Oct-2025 19:18:34.737 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.io=ALL-UNNAMED
+11-Oct-2025 19:18:34.737 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util=ALL-UNNAMED
+11-Oct-2025 19:18:34.737 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+11-Oct-2025 19:18:34.737 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+11-Oct-2025 19:18:34.737 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40
+11-Oct-2025 19:18:34.737 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40
+11-Oct-2025 19:18:34.737 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\temp
+11-Oct-2025 19:18:34.753 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent Loaded Apache Tomcat Native library [2.0.8] using APR version [1.7.4].
+11-Oct-2025 19:18:34.771 INFO [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL successfully initialized [OpenSSL 3.0.14 4 Jun 2024]
+11-Oct-2025 19:18:34.957 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+11-Oct-2025 19:18:34.977 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [407] milliseconds
+11-Oct-2025 19:18:35.013 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+11-Oct-2025 19:18:35.013 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/10.1.40]
+11-Oct-2025 19:18:35.020 INFO [main] org.apache.catalina.startup.HostConfig.deployDescriptor Deploying deployment descriptor [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\conf\Catalina\localhost\SWP391_RMS.xml]
+11-Oct-2025 19:18:35.028 WARNING [main] org.apache.catalina.startup.HostConfig.deployDescriptor The path attribute with value [/SWP391_RMS] in deployment descriptor [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\conf\Catalina\localhost\SWP391_RMS.xml] has been ignored
+11-Oct-2025 19:18:36.092 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+11-Oct-2025 19:18:36.231 INFO [main] org.apache.catalina.startup.HostConfig.deployDescriptor Deployment of deployment descriptor [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\conf\Catalina\localhost\SWP391_RMS.xml] has finished in [1,210] ms
+11-Oct-2025 19:18:36.231 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\webapps\docs]
+11-Oct-2025 19:18:36.253 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\webapps\docs] has finished in [22] ms
+11-Oct-2025 19:18:36.253 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\webapps\examples]
+11-Oct-2025 19:18:36.444 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\webapps\examples] has finished in [191] ms
+11-Oct-2025 19:18:36.444 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\webapps\host-manager]
+11-Oct-2025 19:18:36.465 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\webapps\host-manager] has finished in [21] ms
+11-Oct-2025 19:18:36.465 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\webapps\manager]
+11-Oct-2025 19:18:36.480 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\webapps\manager] has finished in [15] ms
+11-Oct-2025 19:18:36.480 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\webapps\ROOT]
+11-Oct-2025 19:18:36.493 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\webapps\ROOT] has finished in [13] ms
+11-Oct-2025 19:18:36.496 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+11-Oct-2025 19:18:36.600 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [1622] milliseconds
+11-Oct-2025 19:18:38.930 INFO [http-nio-8080-exec-10] org.apache.catalina.startup.HostConfig.undeploy Undeploying context [/SWP391_RMS]
+11-Oct-2025 19:18:38.957 INFO [http-nio-8080-exec-5] org.apache.catalina.startup.HostConfig.deployDescriptor Deploying deployment descriptor [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\conf\Catalina\localhost\SWP391_RMS.xml]
+11-Oct-2025 19:18:38.958 WARNING [http-nio-8080-exec-5] org.apache.catalina.startup.HostConfig.deployDescriptor The path attribute with value [/SWP391_RMS] in deployment descriptor [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\conf\Catalina\localhost\SWP391_RMS.xml] has been ignored
+11-Oct-2025 19:18:39.466 INFO [http-nio-8080-exec-5] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+11-Oct-2025 19:18:39.479 INFO [http-nio-8080-exec-5] org.apache.catalina.startup.HostConfig.deployDescriptor Deployment of deployment descriptor [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\conf\Catalina\localhost\SWP391_RMS.xml] has finished in [522] ms
+11-Oct-2025 19:18:39.483 INFO [http-nio-8080-exec-7] org.apache.catalina.util.LifecycleBase.start The start() method was called on component [StandardEngine[Catalina].StandardHost[localhost].StandardContext[/SWP391_RMS]] after start() had already been called. The second call will be ignored.
+11-Oct-2025 19:19:24.924 WARNING [http-nio-8080-exec-15] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc The web application [SWP391_RMS] registered the JDBC driver [com.microsoft.sqlserver.jdbc.SQLServerDriver] but failed to unregister it when the web application was stopped. To prevent a memory leak, the JDBC Driver has been forcibly unregistered.
+11-Oct-2025 19:19:25.430 INFO [http-nio-8080-exec-15] org.apache.catalina.startup.HostConfig.undeploy Undeploying context [/SWP391_RMS]
