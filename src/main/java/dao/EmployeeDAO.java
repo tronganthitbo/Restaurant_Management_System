@@ -55,7 +55,7 @@ public class EmployeeDAO extends DBContext {
         try {
             String query = "SELECT emp_id, emp_account, password, emp_name, gender, dob, "
                     + "phone_number, email, address, role_id, status "
-                    + "FROM Employee WHERE LOWER(status) <> 'deleted' ORDER BY emp_id"
+                    + "FROM Employee WHERE LOWER(status) <> 'deleted' ORDER BY emp_id "
                     + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{(page - 1) * MAX_ELEMENTS_PER_PAGE, MAX_ELEMENTS_PER_PAGE});
             while (rs.next()) {
@@ -158,7 +158,7 @@ public class EmployeeDAO extends DBContext {
 
     public int countItem() {
         try {
-            String query = "SELECT COUNT(emp_id) AS numrow FROM Employee WHERE LOWER(status) = LOWER(N'Active')";
+            String query = "SELECT COUNT(emp_id) AS numrow FROM Employee WHERE LOWER(status) <> 'deleted'";
             ResultSet rs = this.executeSelectionQuery(query, null);
             if (rs.next()) {
                 return rs.getInt(1);

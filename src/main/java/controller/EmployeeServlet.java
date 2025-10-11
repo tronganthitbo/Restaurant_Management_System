@@ -9,6 +9,7 @@ import static constant.CommonFunction.getTotalPages;
 import static constant.CommonFunction.validateInteger;
 import static constant.CommonFunction.validateString;
 import dao.EmployeeDAO;
+import dao.RoleDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -24,7 +25,9 @@ import java.sql.Date;
  */
 @WebServlet(name = "EmployeeServlet", urlPatterns = {"/employee"})
 public class EmployeeServlet extends HttpServlet {
-    EmployeeDAO empDAO = new EmployeeDAO(); 
+
+    EmployeeDAO empDAO = new EmployeeDAO();
+    RoleDAO roleDAO = new RoleDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -71,6 +74,8 @@ public class EmployeeServlet extends HttpServlet {
             namepage = "list";
         } else if (view.equalsIgnoreCase("create")) {
             namepage = "create";
+            RoleDAO roleDAO = new RoleDAO();
+            request.setAttribute("rolesList", roleDAO.getAvailableRoles());
         } else if (view.equalsIgnoreCase("edit")) {
             namepage = "edit";
             int id;
@@ -80,6 +85,8 @@ public class EmployeeServlet extends HttpServlet {
                 id = -1;
             }
             request.setAttribute("currentEmployee", empDAO.getElementByID(id));
+            RoleDAO roleDAO = new RoleDAO();
+            request.setAttribute("rolesList", roleDAO.getAvailableRoles());
         } else if (view.equalsIgnoreCase("delete")) {
             namepage = "delete";
         }
@@ -110,6 +117,7 @@ public class EmployeeServlet extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         boolean passValidation = true;
+        String errorMsg = "";
 
         if (action != null && !action.isEmpty()) {
             if (action.equalsIgnoreCase("create")) {
@@ -124,8 +132,21 @@ public class EmployeeServlet extends HttpServlet {
                 String email = request.getParameter("email");
                 String address = request.getParameter("address");
                 String role_raw = request.getParameter("role_id");
-                
 
+                int role_id = -1;
+
+                try {
+                    role_id = Integer.parseInt(role_raw);
+                } catch (Exception e) {
+                    passValidation = false;
+                    errorMsg = "Role không hợp lệ!";
+                }
+
+                // Kiểm tra role có bị xóa không
+                if (roleDAO.isRoleDeleted(role_id)) {
+                    passValidation = false;
+                    errorMsg = "Role này đã bị xóa, vui lòng chọn role khác!";
+                }
                 // Validate input
                 if (!validateString(emp_account, -1)
                         || !validateString(password, -1)
@@ -142,7 +163,6 @@ public class EmployeeServlet extends HttpServlet {
                 if (passValidation) {
                     try {
                         Date dob = Date.valueOf(dob_raw);
-                        int role_id = Integer.parseInt(role_raw);
                         int result = empDAO.create(emp_account, password, emp_name, gender, dob,
                                 phone_number, email, address, role_id);
                         if (result < 1) {
@@ -173,7 +193,19 @@ public class EmployeeServlet extends HttpServlet {
                     emp_id = -1;
                     passValidation = false;
                 }
+                int role_id = -1;
+                try {
+                    role_id = Integer.parseInt(role_raw);
+                } catch (Exception e) {
+                    passValidation = false;
+                    errorMsg = "Role không hợp lệ!";
+                }
 
+                // Kiểm tra role có bị xóa không
+                if (roleDAO.isRoleDeleted(role_id)) {
+                    passValidation = false;
+                    errorMsg = "Role này đã bị xóa, vui lòng chọn role khác!";
+                }
                 if (!validateInteger(emp_id, false, false, true)
                         || !validateString(emp_account, -1)
                         || !validateString(password, -1)
@@ -191,7 +223,6 @@ public class EmployeeServlet extends HttpServlet {
                 if (passValidation) {
                     try {
                         Date dob = Date.valueOf(dob_raw);
-                        int role_id = Integer.parseInt(role_raw);
                         int checkError = empDAO.edit(emp_id, emp_account, password, emp_name, gender, dob,
                                 phone_number, email, address, role_id, status);
                         if (checkError < 1) {
@@ -223,7 +254,15 @@ public class EmployeeServlet extends HttpServlet {
                 }
             }
         }
-
+        if (!passValidation) {
+            request.setAttribute("errorMsg", errorMsg);
+            if ("create".equalsIgnoreCase(action)) {
+                request.getRequestDispatcher("/WEB-INF/employee/create.jsp").forward(request, response);
+            } else if ("edit".equalsIgnoreCase(action)) {
+                request.getRequestDispatcher("/WEB-INF/employee/edit.jsp").forward(request, response);
+            }
+            return;
+        }
         response.sendRedirect(request.getContextPath()
                 + "/employee?status=" + (passValidation ? "success" : "fail")
                 + "&lastAction=" + addEDtoEverything(action));
