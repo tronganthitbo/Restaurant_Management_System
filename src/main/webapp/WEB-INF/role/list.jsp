@@ -15,17 +15,17 @@
 
         <p class="text-end">
             <a href="<c:url value="role">
-                   <c:param name="view" value="create"/>
+                   <c:param name="view" value="add"/>
                </c:url>" class="btn btn-success">Add New</a>
         </p>
 
         <table class="table table-bordered table-hover text-center">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
+                    <th width="5%">ID</th>
+                    <th width="20%">Name</th>
                     <th>Description</th>
-                    <th>Action</th>
+                    <th width="20%">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,18 +38,18 @@
                     <c:otherwise>
                         <c:forEach var="role" items="${rolesList}" varStatus="loop">
                             <tr>
-                                <td><c:out value="${role.role_id}"/></td>
-                                <td><c:out value="${role.role_name}"/></td>
+                                <td><c:out value="${role.id}"/></td>
+                                <td><c:out value="${role.name}"/></td>
                                 <td><c:out value="${role.description}"/></td>
 
                                 <td>
                                     <a href="<c:url value="role">
                                            <c:param name="view" value="edit"/>
-                                           <c:param name="id" value="${role.role_id}"/>
+                                           <c:param name="id" value="${role.id}"/>
                                        </c:url>" class="btn btn-primary">
                                         Edit
                                     </a>
-                                    <button type="button" class="btn btn-danger" onclick="showDeletePopup(${role.role_id})">
+                                    <button type="button" class="btn btn-danger" onclick="showDeletePopup(${role.id})">
                                         Delete
                                     </button>        
                                 </td>
