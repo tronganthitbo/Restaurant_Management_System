@@ -42,7 +42,7 @@
                     <td>
                     </td>
                     <td>
-                        <button class="btn btn-outline-dark" type="submit" name="action" value="create">Save</button>
+                        <button class="btn btn-outline-dark" type="submit" name="action" value="add">Save</button>
                         <a class="btn btn-outline-dark" href="<c:url value="table"/>">Cancel</a>
                     </td>
                 </tr>

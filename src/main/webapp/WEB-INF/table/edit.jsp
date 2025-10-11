@@ -36,7 +36,7 @@
                                 <label for="id">ID</label>
                             </th>
                             <td>
-                                <label id="id"><c:out value="${currentTable.table_id}"/></label>
+                                <label id="id"><c:out value="${currentTable.id}"/></label>
                             </td>
                         </tr>
 
@@ -45,7 +45,7 @@
                                 <label for="number">Number</label>
                             </th>
                             <td>
-                                <input type="text" name="number" id="number" value="<c:out value="${currentTable.table_number}"/>" class="form-control" required>
+                                <input type="text" name="number" id="number" value="<c:out value="${currentTable.number}"/>" class="form-control" required>
                             </td>
                         </tr>
 
@@ -54,7 +54,7 @@
                                 <label for="table_capacity">Capacity</label>
                             </th>
                             <td>
-                                <input type="text" name="table_capacity" id="table_capacity" value="<c:out value="${currentTable.table_capacity}"/>" class="form-control" required>
+                                <input type="text" name="table_capacity" id="table_capacity" value="<c:out value="${currentTable.capacity}"/>" class="form-control" required>
                             </td>
                         </tr>
 

@@ -30,18 +30,18 @@ public class TableDAO extends DBContext {
         try {
             String query = "SELECT table_id, table_number, table_capacity, status\n"
                     + "FROM     [table]\n"
-                    + "WHERE  (LOWER(status) = LOWER(N'Active'))\n"
+                    + "WHERE  (LOWER(status) <> LOWER(N'Deleted'))\n"
                     + "ORDER BY table_id";
 
             ResultSet rs = this.executeSelectionQuery(query, null);
 
             while (rs.next()) {
-                int table_id = rs.getInt(1);
-                String table_number = rs.getString(2);
-                int table_capacity = rs.getInt(3);
+                int id = rs.getInt(1);
+                String number = rs.getString(2);
+                int capacity = rs.getInt(3);
                 String status = rs.getString(4);
 
-                Table item = new Table(table_id, table_number, table_capacity, status);
+                Table item = new Table(id, number, capacity, status);
 
                 list.add(item);
             }
@@ -58,7 +58,7 @@ public class TableDAO extends DBContext {
         try {
             String query = "SELECT table_id, table_number, table_capacity, status\n"
                     + "FROM     [table]\n"
-                    + "WHERE  (LOWER(status) = LOWER(N'Active'))\n"
+                    + "WHERE  (LOWER(status) <> LOWER(N'Deleted'))\n"
                     + "ORDER BY table_id\n"
                     + "OFFSET ? ROWS \n"
                     + "FETCH NEXT ? ROWS ONLY;";
@@ -66,12 +66,12 @@ public class TableDAO extends DBContext {
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{(page - 1) * MAX_ELEMENTS_PER_PAGE, MAX_ELEMENTS_PER_PAGE});
 
             while (rs.next()) {
-                int table_id = rs.getInt(1);
-                String table_number = rs.getString(2);
-                int table_capacity = rs.getInt(3);
+                int id = rs.getInt(1);
+                String number = rs.getString(2);
+                int capacity = rs.getInt(3);
                 String status = rs.getString(4);
 
-                Table item = new Table(table_id, table_number, table_capacity, status);
+                Table item = new Table(id, number, capacity, status);
 
                 list.add(item);
             }
@@ -87,18 +87,17 @@ public class TableDAO extends DBContext {
         try {
             String query = "SELECT table_id, table_number, table_capacity, status\n"
                     + "FROM     [table]\n"
-                    + "WHERE  (table_id = ? and  LOWER(status) = LOWER(N'Active'))\n"
+                    + "WHERE  (table_id = ? and  LOWER(status) <> LOWER(N'Deleted'))\n"
                     + "ORDER BY table_id\n";
 
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{id});
 
             while (rs.next()) {
-                int table_id = rs.getInt(1);
-                String table_number = rs.getString(2);
-                int table_capacity = rs.getInt(3);
+                String number = rs.getString(2);
+                int capacity = rs.getInt(3);
                 String status = rs.getString(4);
 
-                Table item = new Table(table_id, table_number, table_capacity, status);
+                Table item = new Table(id, number, capacity, status);
 
                 return item;
             }
@@ -109,13 +108,13 @@ public class TableDAO extends DBContext {
         return null;
     }
 
-    public int create(String table_number, int table_capacity) {
+    public int add(String number, int capacity) {
         try {
             String query = "INSERT INTO [table]\n"
                     + "                  (table_number, table_capacity, status)\n"
                     + "VALUES (?, ?, ?)";
 
-            return this.executeQuery(query, new Object[]{table_number, table_capacity, "Active"});
+            return this.executeQuery(query, new Object[]{number, capacity, "Active"});
 
         } catch (SQLException ex) {
 
@@ -129,14 +128,14 @@ public class TableDAO extends DBContext {
         return -1;
     }
 
-    public int edit(int table_id, String table_number, int table_capacity) {
+    public int edit(int id, String number, int capacity) {
         try {
 
             String query = "UPDATE [table]\n"
                     + "SET          table_number = ?, table_capacity = ?\n"
                     + "WHERE  (table_id = ?)";
 
-            return this.executeQuery(query, new Object[]{table_number, table_capacity, table_id});
+            return this.executeQuery(query, new Object[]{number, capacity, id});
 
         } catch (SQLException ex) {
 
@@ -166,7 +165,9 @@ public class TableDAO extends DBContext {
 
     public int countItem() {
         try {
-            String query = "select count(table_id) as numrow from [dbo].[table]";
+            String query = "SELECT COUNT(table_id) AS numrow\n"
+                    + "FROM     [table]\n"
+                    + "WHERE  (LOWER(status) <> LOWER(N'Deleted'))";
             ResultSet rs = this.executeSelectionQuery(query, null);
             if (rs.next()) {
                 return rs.getInt(1);
