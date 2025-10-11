@@ -6,36 +6,36 @@ package model;
 
 /**
  *
- * @author Dai Minh Nhu - CE190213
+ * @author Tieu Gia Huy - CE191594
  */
-public class Role {
+public class Category {
 
-    private int id;
-    private String name;
+    private int categoryId;
+    private String categoryName;
     private String description;
     private String status;
 
-    public Role(int id, String name, String description, String status) {
-        this.id = id;
-        this.name = name;
+    public Category(int categoryId, String categoryName, String description, String status) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
         this.description = description;
         this.status = status;
     }
 
-    public int getId() {
-        return id;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String getName() {
-        return name;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public String getDescription() {
@@ -53,6 +53,5 @@ public class Role {
     public void setStatus(String status) {
         this.status = status;
     }
-    
-    
+
 }

@@ -6,11 +6,10 @@ package controller;
 
 import static constant.CommonFunction.addEDtoEverything;
 import static constant.CommonFunction.getTotalPages;
-import static constant.CommonFunction.stringConvertDateTime;
 import static constant.CommonFunction.validateInteger;
 import static constant.CommonFunction.validateString;
 import constant.Constants;
-import dao.RoleDAO;
+import dao.CategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,15 +17,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Category;
 
 /**
  *
- * @author Dai Minh Nhu - CE190213
+ * @author Nguyen Thanh Nhan - CE190122
  */
-@WebServlet(name = "RoleServlet", urlPatterns = {"/role"})
-public class RoleServlet extends HttpServlet {
+@WebServlet(name = "CategoryServlet", urlPatterns = {"/category"})
+public class CategoryServlet extends HttpServlet {
 
-    RoleDAO roleDAO = new RoleDAO();
+    CategoryDAO categoryDAO = new CategoryDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,10 +46,10 @@ public class RoleServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RoleServlet</title>");
+            out.println("<title>Servlet CategoryServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RoleServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CategoryServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -69,7 +70,7 @@ public class RoleServlet extends HttpServlet {
         String namepage = "";
         String view = request.getParameter("view");
 
-        if (!validateString(view, -1) || view.equalsIgnoreCase("list")) {
+        if (!validateString(view, -1)) {
             namepage = "list";
         } else if (view.equalsIgnoreCase("add")) {
             namepage = "add";
@@ -84,13 +85,13 @@ public class RoleServlet extends HttpServlet {
                 id = -1;
             }
 
-            request.setAttribute("currentRole", roleDAO.getElementByID(id));
+            request.setAttribute("currentCategory", categoryDAO.getElementByID(id));
         } else if (view.equalsIgnoreCase("delete")) {
             namepage = "delete";
         }
 
         int page;
-        int totalPages = getTotalPages(roleDAO.countItem());
+        int totalPages = getTotalPages(categoryDAO.countItem());
 
         try {
             page = Integer.parseInt(request.getParameter("page"));
@@ -99,9 +100,9 @@ public class RoleServlet extends HttpServlet {
         }
 
         request.setAttribute("totalPages", totalPages);
-        request.setAttribute("rolesList", roleDAO.getAll(page));
+        request.setAttribute("categoryList", categoryDAO.getAll(page));
 
-        request.getRequestDispatcher("/WEB-INF/role/" + namepage + ".jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/category/" + namepage + ".jsp").forward(request, response);
     }
 
     /**
@@ -121,7 +122,7 @@ public class RoleServlet extends HttpServlet {
         if (action != null && !action.isEmpty()) {
 
             if (action.equalsIgnoreCase("add")) {
-                String name = request.getParameter("role_name");
+                String name = request.getParameter("categoryName");
                 String description = request.getParameter("description");
 
 //validate
@@ -130,7 +131,7 @@ public class RoleServlet extends HttpServlet {
                 }
 //end
                 if (passValidation == true) {
-                    if (roleDAO.add(name, description) >= 1) {
+                    if (categoryDAO.add(name, description) >= 1) {
                     } else {
                         passValidation = false;
                     }
@@ -156,7 +157,7 @@ public class RoleServlet extends HttpServlet {
                 }
 //end
                 if (passValidation == true) {
-                    int checkError = roleDAO.edit(id, name, description);
+                    int checkError = categoryDAO.edit(id, name, description);
 
                     if (checkError >= 1) {
 
@@ -189,7 +190,7 @@ public class RoleServlet extends HttpServlet {
                 }
 //end
                 if (passValidation == true) {
-                    int checkError = roleDAO.delete(id);
+                    int checkError = categoryDAO.delete(id);
 
                     if (checkError >= 1) {
 
@@ -208,7 +209,7 @@ public class RoleServlet extends HttpServlet {
             }
         }
 
-        response.sendRedirect(request.getContextPath() + "/role?" + "status=" + (passValidation ? "success" : "fail") + "&lastAction=" + addEDtoEverything(action));
+        response.sendRedirect(request.getContextPath() + "/category?" + "status=" + (passValidation ? "success" : "fail") + "&lastAction=" + addEDtoEverything(action));
 
     }
 

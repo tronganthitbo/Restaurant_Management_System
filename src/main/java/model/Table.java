@@ -10,40 +10,40 @@ package model;
  */
 public class Table {
 
-    private int table_id;
-    private String table_number;
-    private int table_capacity;
+    private int id;
+    private String number;
+    private int capacity;
     private String status;
 
-    public Table(int table_id, String table_number, int table_capacity, String status) {
-        this.table_id = table_id;
-        this.table_number = table_number;
-        this.table_capacity = table_capacity;
+    public Table(int id, String number, int capacity, String status) {
+        this.id = id;
+        this.number = number;
+        this.capacity = capacity;
         this.status = status;
     }
 
-    public int getTable_id() {
-        return table_id;
+    public int getId() {
+        return id;
     }
 
-    public void setTable_id(int table_id) {
-        this.table_id = table_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getTable_number() {
-        return table_number;
+    public String getNumber() {
+        return number;
     }
 
-    public void setTable_number(String table_number) {
-        this.table_number = table_number;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
-    public int getTable_capacity() {
-        return table_capacity;
+    public int getCapacity() {
+        return capacity;
     }
 
-    public void setTable_capacity(int table_capacity) {
-        this.table_capacity = table_capacity;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     public String getStatus() {
@@ -55,5 +55,4 @@ public class Table {
     }
     
     
-
 }

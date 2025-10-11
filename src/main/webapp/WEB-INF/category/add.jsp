@@ -1,6 +1,6 @@
 <%-- 
-    Document   : create
-    Created on : 20 Jun 2025, 10:03:41 PM
+    Document   : add
+    addd on : 20 Jun 2025, 10:03:41 PM
     Author     : Dai Minh Nhu - CE190213
 --%>
 
@@ -10,8 +10,8 @@
 <main>
 
     <div class="container">
-        <h1 class="mt-5">Add new Table</h1>
-        <form method="post" action="<c:url value="table"/>">
+        <h1 class="mt-5">Add new Category</h1>
+        <form method="post" action="<c:url value="category"/>">
             <table class="table">
                 <tr>
                     <td>
@@ -22,19 +22,19 @@
 
                 <tr>
                     <th>
-                        <label for="number">Number</label>
+                        <label for="name">Name</label>
                     </th>
                     <td>
-                        <input type="text" name="number" id="number" class="form-control" required>
+                        <input type="text" name="categoryName" id="name" class="form-control" required>
                     </td>
                 </tr>
 
                 <tr>
                     <th>
-                        <label for="table_capacity">Capacity</label>
+                        <label for="description">Description</label>
                     </th>
                     <td>
-                        <input type="number" name="table_capacity" id="table_capacity" class="form-control" required>
+                        <input type="text" name="description" id="description" class="form-control">
                     </td>
                 </tr>
 
@@ -42,8 +42,8 @@
                     <td>
                     </td>
                     <td>
-                        <button class="btn btn-outline-dark" type="submit" name="action" value="create">Save</button>
-                        <a class="btn btn-outline-dark" href="<c:url value="table"/>">Cancel</a>
+                        <button class="btn btn-outline-dark" type="submit" name="action" value="add">Save</button>
+                        <a class="btn btn-outline-dark" href="<c:url value="category"/>">Cancel</a>
                     </td>
                 </tr>
             </table>

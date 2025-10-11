@@ -1,6 +1,6 @@
 <%-- 
     Document   : list
-    Created on : 21 Sep 2025, 10:04:02 AM
+    addd on : 21 Sep 2025, 10:04:02 AM
     Author     : Dai Minh Nhu - CE190213
 --%>
 
@@ -11,10 +11,10 @@
 <main>
     <div class="container">
 
-        <h2>Table list</h2>
+        <h2>Category list</h2>
 
         <p class="text-end">
-            <a href="<c:url value="table">
+            <a href="<c:url value="category">
                    <c:param name="view" value="add"/>
                </c:url>" class="btn btn-success">Add New</a>
         </p>
@@ -23,33 +23,33 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Number</th>
-                    <th>Capacity</th>
+                    <th>Name</th>
+                    <th>Description</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <c:choose>
-                    <c:when test="${tablesList == null || empty tablesList}">
+                    <c:when test="${categoryList == null || empty categoryList}">
                         <tr>
                             <td colspan="8" style="color:red;">No data to display</td>
                         </tr>   
                     </c:when>
                     <c:otherwise>
-                        <c:forEach var="table" items="${tablesList}" varStatus="loop">
+                        <c:forEach var="category" items="${categoryList}" varStatus="loop">
                             <tr>
-                                <td><c:out value="${table.id}"/></td>
-                                <td><c:out value="${table.number}"/></td>
-                                <td><c:out value="${table.capacity}"/></td>
+                                <td><c:out value="${category.categoryId}"/></td>
+                                <td><c:out value="${category.categoryName}"/></td>
+                                <td><c:out value="${category.description}"/></td>
 
                                 <td>
-                                    <a href="<c:url value="table">
+                                    <a href="<c:url value="category">
                                            <c:param name="view" value="edit"/>
-                                           <c:param name="id" value="${table.id}"/>
+                                           <c:param name="id" value="${category.categoryId}"/>
                                        </c:url>" class="btn btn-primary">
                                         Edit
                                     </a>
-                                    <button type="button" class="btn btn-danger" onclick="showDeletePopup(${table.id})">
+                                    <button type="button" class="btn btn-danger" onclick="showDeletePopup(${category.categoryId})">
                                         Delete
                                     </button>        
                                 </td>
@@ -62,7 +62,7 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 <li class="page-item ${((empty param.page) || param.page <= 1)?"disabled":""}">
-                    <a class="page-link" href="<c:url value="/table">
+                    <a class="page-link" href="<c:url value="/category">
                            <c:param name="view" value="list"/>
                            <c:param name="page" value="${param.page - 1}"/>
                        </c:url>" aria-label="Previous">
@@ -71,13 +71,13 @@
                 </li>
                 <c:forEach begin="1" end="${requestScope.totalPages}" var="i">
                     <li class="page-item ${((empty param.page && i == 1) || param.page == i)?"active":""}">
-                        <a class="page-link" href="<c:url value="/table">
+                        <a class="page-link" href="<c:url value="/category">
                                <c:param name="view" value="list"/>
                                <c:param name="page" value="${i}"/>
                            </c:url>">${i}</a></li>
                     </c:forEach>
                 <li class="page-item ${(requestScope.totalPages <= param.page || requestScope.totalPages eq 1 )?"disabled":""}">
-                    <a class="page-link" href="<c:url value="/table">
+                    <a class="page-link" href="<c:url value="/category">
                            <c:param name="view" value="list"/>
                            <c:param name="page" value="${(empty param.page)?2:param.page + 1}"/>
                        </c:url>" aria-label="Next">
@@ -97,10 +97,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-danger">
-                <h6 id="idForDeletePopup">Are you sure you want to delete this?</h6>
+                <h6 id="idForDeletePopup">Are you sure you want to delete this category?</h6>
                 <small class="text-muted">This action cannot be undone.</small>
             </div>
-            <form method="post" action="<c:url value="table"/>">
+            <form method="post" action="<c:url value="category"/>">
                 <input type="hidden" id="hiddenInputIdDelete" name="id" value="">
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -114,7 +114,7 @@
 <script>
     function showDeletePopup(id) {
         document.getElementById("hiddenInputIdDelete").value = id;
-        document.getElementById("idForDeletePopup").textContent = "Are you sure you want to delete the table with id = " + id + "?";
+        document.getElementById("idForDeletePopup").textContent = "Are you sure you want to delete the category with id = " + id + "?";
         var myModal = new bootstrap.Modal(document.getElementById('deletePopup'));
         myModal.show();
     }
@@ -131,10 +131,10 @@
                 <div class="modal-body">
                     <c:choose>
                         <c:when test="${param.status eq 'success'}">
-                            <p style="color: green">The action <c:out value="${param.lastAction}"/> successfully.</p>
+                            <p style="color: green">The promotion <c:out value="${param.lastAction}"/> successfully.</p>
                         </c:when>
                         <c:otherwise>
-                            <p style="color: red">Failed to <c:out value="${param.lastAction}"/>. Please check the information.</p>
+                            <p style="color: red">Failed to <c:out value="${param.lastAction}"/> the promotion. Please check the information.</p>
                         </c:otherwise>
                     </c:choose>
                 </div>
