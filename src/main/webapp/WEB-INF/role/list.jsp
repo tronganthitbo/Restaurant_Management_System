@@ -131,10 +131,10 @@
                 <div class="modal-body">
                     <c:choose>
                         <c:when test="${param.status eq 'success'}">
-                            <p style="color: green">The promotion <c:out value="${param.lastAction}"/> successfully.</p>
+                            <p style="color: green">The action <c:out value="${param.lastAction}"/> successfully.</p>
                         </c:when>
                         <c:otherwise>
-                            <p style="color: red">Failed to <c:out value="${param.lastAction}"/> the promotion. Please check the information.</p>
+                            <p style="color: red">Failed to <c:out value="${param.lastAction}"/>. Please check the information.</p>
                         </c:otherwise>
                     </c:choose>
                 </div>
