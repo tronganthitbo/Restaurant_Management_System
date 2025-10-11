@@ -69,7 +69,7 @@ public class TableServlet extends HttpServlet {
         String namepage = "";
         String view = request.getParameter("view");
 
-        if (!validateString(view, -1)) {
+        if (!validateString(view, -1) || view.equalsIgnoreCase("list")) {
             namepage = "list";
         } else if (view.equalsIgnoreCase("create")) {
             namepage = "create";

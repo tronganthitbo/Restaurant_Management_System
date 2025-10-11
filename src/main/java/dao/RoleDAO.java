@@ -37,12 +37,12 @@ public class RoleDAO extends DBContext {
 
             while (rs.next()) {
 
-                int role_id = rs.getInt(1);
-                String role_name = rs.getString(2);
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
                 String description = rs.getString(3);
                 String status = rs.getString(4);
 
-                Role role = new Role(role_id, role_name, description, status);
+                Role role = new Role(id, name, description, status);
 
                 list.add(role);
             }
@@ -67,12 +67,12 @@ public class RoleDAO extends DBContext {
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{(page - 1) * MAX_ELEMENTS_PER_PAGE, MAX_ELEMENTS_PER_PAGE});
 
             while (rs.next()) {
-                int role_id = rs.getInt(1);
-                String role_name = rs.getString(2);
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
                 String description = rs.getString(3);
                 String status = rs.getString(4);
 
-                Role role = new Role(role_id, role_name, description, status);
+                Role role = new Role(id, name, description, status);
 
                 list.add(role);
             }
@@ -93,12 +93,11 @@ public class RoleDAO extends DBContext {
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{id});
 
             while (rs.next()) {
-                int role_id = rs.getInt(1);
-                String role_name = rs.getString(2);
+                String name = rs.getString(2);
                 String description = rs.getString(3);
                 String status = rs.getString(4);
 
-                Role role = new Role(role_id, role_name, description, status);
+                Role role = new Role(id, name, description, status);
 
                 return role;
             }
@@ -109,12 +108,12 @@ public class RoleDAO extends DBContext {
         return null;
     }
 
-    public int create(String role_name, String description) {
+    public int add(String name, String description) {
         try {
             String query = "INSERT INTO role (role_name, description, status)\n"
                     + "VALUES (?, ?, ?)";
 
-            return this.executeQuery(query, new Object[]{role_name, description, "Active"});
+            return this.executeQuery(query, new Object[]{name, description, "Active"});
 
         } catch (SQLException ex) {
 
@@ -128,14 +127,14 @@ public class RoleDAO extends DBContext {
         return -1;
     }
 
-    public int edit(int role_id, String role_name, String description) {
+    public int edit(int id, String name, String description) {
         try {
 
             String query = "UPDATE role\n"
                     + "SET role_name = ?, description = ?\n"
                     + "WHERE  (role_id = ?)";
 
-            return this.executeQuery(query, new Object[]{role_name, description, role_id});
+            return this.executeQuery(query, new Object[]{name, description, id});
 
         } catch (SQLException ex) {
 
@@ -148,7 +147,7 @@ public class RoleDAO extends DBContext {
         }
         return -1;
     }
-    
+
     public int delete(int id) {
         try {
             String query = "UPDATE role\n"
@@ -158,14 +157,16 @@ public class RoleDAO extends DBContext {
             return this.executeQuery(query, new Object[]{id});
 
         } catch (SQLException ex) {
-            
+
         }
         return -1;
     }
 
     public int countItem() {
         try {
-            String query = "select count(role_id) as numrow from [dbo].[Role]";
+            String query = "SELECT COUNT(role_id) AS numrow\n"
+                    + "FROM     role\n"
+                    + "WHERE  (LOWER(status) <> LOWER(N'Deleted'))";
             ResultSet rs = this.executeSelectionQuery(query, null);
             if (rs.next()) {
                 return rs.getInt(1);

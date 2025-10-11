@@ -69,10 +69,10 @@ public class RoleServlet extends HttpServlet {
         String namepage = "";
         String view = request.getParameter("view");
 
-        if (!validateString(view, -1)) {
+        if (!validateString(view, -1) || view.equalsIgnoreCase("list")) {
             namepage = "list";
-        } else if (view.equalsIgnoreCase("create")) {
-            namepage = "create";
+        } else if (view.equalsIgnoreCase("add")) {
+            namepage = "add";
         } else if (view.equalsIgnoreCase("edit")) {
             namepage = "edit";
 
@@ -120,7 +120,7 @@ public class RoleServlet extends HttpServlet {
         boolean passValidation = true;
         if (action != null && !action.isEmpty()) {
 
-            if (action.equalsIgnoreCase("create")) {
+            if (action.equalsIgnoreCase("add")) {
                 String name = request.getParameter("role_name");
                 String description = request.getParameter("description");
 
@@ -130,7 +130,7 @@ public class RoleServlet extends HttpServlet {
                 }
 //end
                 if (passValidation == true) {
-                    if (roleDAO.create(name, description) >= 1) {
+                    if (roleDAO.add(name, description) >= 1) {
                     } else {
                         passValidation = false;
                     }
