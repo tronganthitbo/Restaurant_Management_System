@@ -122,7 +122,7 @@ public class CategoryServlet extends HttpServlet {
         if (action != null && !action.isEmpty()) {
 
             if (action.equalsIgnoreCase("add")) {
-                String name = request.getParameter("category_name");
+                String name = request.getParameter("categoryName");
                 String description = request.getParameter("description");
 
 //validate

@@ -25,7 +25,7 @@
                         <label for="name">Name</label>
                     </th>
                     <td>
-                        <input type="text" name="category_name" id="name" class="form-control" required>
+                        <input type="text" name="categoryName" id="name" class="form-control" required>
                     </td>
                 </tr>
 

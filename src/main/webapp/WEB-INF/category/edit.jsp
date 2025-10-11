@@ -36,7 +36,7 @@
                                 <label for="id">ID</label>
                             </th>
                             <td>
-                                <label id="id"><c:out value="${currentCategory.category_id}"/></label>
+                                <label id="id"><c:out value="${currentCategory.categoryId}"/></label>
                             </td>
                         </tr>
 
@@ -45,7 +45,7 @@
                                 <label for="name">Name</label>
                             </th>
                             <td>
-                                <input type="text" name="name" id="name" value="<c:out value="${currentCategory.category_name}"/>" class="form-control" required>
+                                <input type="text" name="name" id="name" value="<c:out value="${currentCategory.categoryName}"/>" class="form-control" required>
                             </td>
                         </tr>
 

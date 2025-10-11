@@ -38,18 +38,18 @@
                     <c:otherwise>
                         <c:forEach var="category" items="${categoryList}" varStatus="loop">
                             <tr>
-                                <td><c:out value="${category.category_id}"/></td>
-                                <td><c:out value="${category.category_name}"/></td>
+                                <td><c:out value="${category.categoryId}"/></td>
+                                <td><c:out value="${category.categoryName}"/></td>
                                 <td><c:out value="${category.description}"/></td>
 
                                 <td>
                                     <a href="<c:url value="category">
                                            <c:param name="view" value="edit"/>
-                                           <c:param name="id" value="${category.category_id}"/>
+                                           <c:param name="id" value="${category.categoryId}"/>
                                        </c:url>" class="btn btn-primary">
                                         Edit
                                     </a>
-                                    <button type="button" class="btn btn-danger" onclick="showDeletePopup(${category.category_id})">
+                                    <button type="button" class="btn btn-danger" onclick="showDeletePopup(${category.categoryId})">
                                         Delete
                                     </button>        
                                 </td>

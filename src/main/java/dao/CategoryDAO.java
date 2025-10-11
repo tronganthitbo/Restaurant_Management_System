@@ -32,12 +32,12 @@ public class CategoryDAO extends DBContext {
 
             while (rs.next()) {
 
-                int category_id = rs.getInt(1);
-                String category_name = rs.getString(2);
+                int categoryId = rs.getInt(1);
+                String categoryName = rs.getString(2);
                 String description = rs.getString(3);
                 String status = rs.getString(4);
 
-                Category category = new Category(category_id, category_name, description, status);
+                Category category = new Category(categoryId, categoryName, description, status);
 
                 list.add(category);
             }
@@ -62,12 +62,12 @@ public class CategoryDAO extends DBContext {
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{(page - 1) * MAX_ELEMENTS_PER_PAGE, MAX_ELEMENTS_PER_PAGE});
 
             while (rs.next()) {
-                int category_id = rs.getInt(1);
-                String category_name = rs.getString(2);
+                int categoryId = rs.getInt(1);
+                String categoryName = rs.getString(2);
                 String description = rs.getString(3);
                 String status = rs.getString(4);
 
-                Category category = new Category(category_id, category_name, description, status);
+                Category category = new Category(categoryId, categoryName, description, status);
 
                 list.add(category);
             }
@@ -88,12 +88,12 @@ public class CategoryDAO extends DBContext {
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{id});
 
             while (rs.next()) {
-                int category_id = rs.getInt(1);
-                String category_name = rs.getString(2);
+                int categoryId = rs.getInt(1);
+                String categoryName = rs.getString(2);
                 String description = rs.getString(3);
                 String status = rs.getString(4);
 
-                Category category = new Category(category_id, category_name, description, status);
+                Category category = new Category(categoryId, categoryName, description, status);
 
                 return category;
             }
@@ -104,12 +104,12 @@ public class CategoryDAO extends DBContext {
         return null;
     }
 
-    public int add(String category_name, String description) {
+    public int add(String categoryName, String description) {
         try {
             String query = "INSERT INTO category (category_name, description, status)\n"
                     + "VALUES (?, ?, ?)";
 
-            return this.executeQuery(query, new Object[]{category_name, description, "Active"});
+            return this.executeQuery(query, new Object[]{categoryName, description, "Active"});
 
         } catch (SQLException ex) {
 
@@ -123,14 +123,14 @@ public class CategoryDAO extends DBContext {
         return -1;
     }
 
-    public int edit(int category_id, String category_name, String description) {
+    public int edit(int categoryId, String categoryName, String description) {
         try {
 
             String query = "UPDATE category\n"
                     + "SET category_name = ?, description = ?\n"
                     + "WHERE  (category_id = ?)";
 
-            return this.executeQuery(query, new Object[]{category_name, description, category_id});
+            return this.executeQuery(query, new Object[]{categoryName, description, categoryId});
 
         } catch (SQLException ex) {
 
