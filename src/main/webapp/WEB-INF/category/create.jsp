@@ -10,8 +10,8 @@
 <main>
 
     <div class="container">
-        <h1 class="mt-5">Add new Role</h1>
-        <form method="post" action="<c:url value="role"/>">
+        <h1 class="mt-5">Add new Category</h1>
+        <form method="post" action="<c:url value="category"/>">
             <table class="table">
                 <tr>
                     <td>
@@ -25,7 +25,7 @@
                         <label for="name">Name</label>
                     </th>
                     <td>
-                        <input type="text" name="role_name" id="name" class="form-control" required>
+                        <input type="text" name="category_name" id="name" class="form-control" required>
                     </td>
                 </tr>
 
