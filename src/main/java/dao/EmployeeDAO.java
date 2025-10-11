@@ -24,8 +24,8 @@ public class EmployeeDAO extends DBContext {
         List<Employee> list = new ArrayList<>();
         try {
             String query = "SELECT emp_id, emp_account, password, emp_name, gender, dob, "
-                    + "phone_number, email, address, role_id, status "
-                    + "FROM Employee WHERE LOWER(status) <> 'deleted' ORDER BY emp_id";
+                    + "phone_number, email, address, role_id, status \n"
+                    + "FROM Employee WHERE LOWER(status) <> 'deleted' ORDER BY emp_id\n";
             ResultSet rs = this.executeSelectionQuery(query, null);
             while (rs.next()) {
                 int emp_id = rs.getInt(1);
@@ -54,8 +54,8 @@ public class EmployeeDAO extends DBContext {
         List<Employee> list = new ArrayList<>();
         try {
             String query = "SELECT emp_id, emp_account, password, emp_name, gender, dob, "
-                    + "phone_number, email, address, role_id, status "
-                    + "FROM Employee WHERE LOWER(status) <> 'deleted' ORDER BY emp_id"
+                    + "phone_number, email, address, role_id, status\n"
+                    + "FROM Employee WHERE LOWER(status) <> 'deleted' ORDER BY emp_id\n"
                     + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{(page - 1) * MAX_ELEMENTS_PER_PAGE, MAX_ELEMENTS_PER_PAGE});
             while (rs.next()) {
@@ -84,7 +84,7 @@ public class EmployeeDAO extends DBContext {
     public Employee getElementByID(int id) {
         try {
             String query = "SELECT emp_id, emp_account, password, emp_name, gender, dob, "
-                    + "phone_number, email, address, role_id, status "
+                    + "phone_number, email, address, role_id, status \n"
                     + "FROM Employee WHERE emp_id = ? AND LOWER(status) <> 'deleted'";
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{id});
             while (rs.next()) {
@@ -114,7 +114,7 @@ public class EmployeeDAO extends DBContext {
             String phone_number, String email, String address, int role_id) {
         try {
             String query = "INSERT INTO Employee (emp_account, password, emp_name, gender, dob, "
-                    + "phone_number, email, address, role_id, status) "
+                    + "phone_number, email, address, role_id, status) \n"
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             return this.executeQuery(query,
                     new Object[]{emp_account, password, emp_name, gender, dob, phone_number, email, address, role_id, "Active"});
@@ -132,7 +132,7 @@ public class EmployeeDAO extends DBContext {
             String phone_number, String email, String address, int role_id, String status) {
         try {
             String query = "UPDATE Employee SET emp_account = ?, password = ?, emp_name = ?, gender = ?, dob = ?, "
-                    + "phone_number = ?, email = ?, address = ?, role_id = ?, status = ? "
+                    + "phone_number = ?, email = ?, address = ?, role_id = ?, status = ? \n"
                     + "WHERE emp_id = ?";
             return this.executeQuery(query, new Object[]{emp_account, password, emp_name, gender, dob, phone_number,
                 email, address, role_id, status, emp_id});
