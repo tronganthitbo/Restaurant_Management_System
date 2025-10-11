@@ -80,7 +80,7 @@ public class VoucherDAO extends DBContext {
     public Voucher getById(int id) {
         try {
             String query = "SELECT voucher_id, voucher_code, voucher_name, discount_type, discount_value, quantity, start_date, end_date, status "
-                         + "FROM Voucher WHERE LOWER(status) <> 'deleted' "
+                         + "FROM Voucher WHERE voucher_id = ? AND LOWER(status) <> 'deleted'"
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{id});
             if (rs.next()) {
                 return new Voucher(
