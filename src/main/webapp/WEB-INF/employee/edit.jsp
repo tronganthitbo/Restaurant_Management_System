@@ -14,8 +14,8 @@
             <c:when test="${not empty currentEmployee}">
                 <h1 class="mt-5">Edit Employee</h1>
                 <form method="post" action="<c:url value='employee'>
-                    <c:param name='id' value='${param.id}'/>
-                </c:url>">
+                          <c:param name='id' value='${param.id}'/>
+                      </c:url>">
                     <table class="table">
                         <tr>
                             <th><label for="empId">ID</label></th>
@@ -50,15 +50,15 @@
                                     <option value="Male" <c:if test='${currentEmployee.gender=="Male"}'>selected</c:if>>Male</option>
                                     <option value="Female" <c:if test='${currentEmployee.gender=="Female"}'>selected</c:if>>Female</option>
                                     <option value="Other" <c:if test='${currentEmployee.gender=="Other"}'>selected</c:if>>Other</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th><label for="dob">Date of Birth</label></th>
-                            <td>
-                                <input type="date" name="dob" id="dob"
-                                       value="<c:out value='${currentEmployee.dob}'/>"
-                                       class="form-control" required>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="dob">Date of Birth</label></th>
+                                <td>
+                                    <input type="date" name="dob" id="dob"
+                                           value="<c:out value='${currentEmployee.dob}'/>"
+                                    class="form-control" required>
                             </td>
                         </tr>
                         <tr>
@@ -82,7 +82,11 @@
                         <tr>
                             <th><label for="roleId">Role ID</label></th>
                             <td>
-                                <input type="number" name="role_id" id="roleId" value="<c:out value='${currentEmployee.roleId}'/>" class="form-control" required>
+                                <select name="role_id" id="roleId" class="form-control" required>
+                                    <c:forEach var="role" items="${rolesList}">
+                                        <option value="${role.role_id}" <c:if test="${role.role_id == currentEmployee.roleId}">selected</c:if>>${role.role_name}</option>
+                                    </c:forEach>
+                                </select>
                             </td>
                         </tr>
                         <tr>
@@ -91,14 +95,14 @@
                                 <select name="status" id="status" class="form-control" required>
                                     <option value="Active" <c:if test='${currentEmployee.status=="Active"}'>selected</c:if>>Active</option>
                                     <option value="Inactive" <c:if test='${currentEmployee.status=="Inactive"}'>selected</c:if>>Inactive</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button class="btn btn-success" type="submit" name="action" value="edit">Save</button>
-                                <a class="btn btn-outline-dark" href="<c:url value='employee'/>">Cancel</a>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button class="btn btn-success" type="submit" name="action" value="edit">Save</button>
+                                    <a class="btn btn-outline-dark" href="<c:url value='employee'/>">Cancel</a>
                             </td>
                         </tr>
                     </table>

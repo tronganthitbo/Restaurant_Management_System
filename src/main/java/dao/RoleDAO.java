@@ -177,4 +177,32 @@ public class RoleDAO extends DBContext {
 
         return 0;
     }
+
+    public boolean isRoleDeleted(int roleId) {
+        try {
+            String query = "SELECT status FROM Role WHERE role_id = ?";
+            ResultSet rs = this.executeSelectionQuery(query, new Object[]{roleId});
+            if (rs.next()) {
+                String status = rs.getString("status");
+                return "Deleted".equalsIgnoreCase(status);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false; // Không tìm thấy role hoặc query lỗi thì coi như không bị xóa
+    }
+
+    public List<Role> getAvailableRoles() {
+        List<Role> list = new ArrayList<>();
+        try {
+            String query = "SELECT role_id, role_name FROM role WHERE LOWER(status) <> 'deleted' ORDER BY role_id";
+            ResultSet rs = this.executeSelectionQuery(query, null);
+            while (rs.next()) {
+                list.add(new Role(rs.getInt("role_id"), rs.getString("role_name"), "", "Active"));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return list;
+    }
 }

@@ -54,7 +54,13 @@
                 </tr>
                 <tr>
                     <th><label for="roleId">Role ID</label></th>
-                    <td><input type="number" name="role_id" id="roleId" class="form-control" required></td>
+                    <td>
+                        <select name="role_id" id="roleId" class="form-control" required>
+                            <c:forEach var="role" items="${rolesList}">
+                                <option value="${role.role_id}">${role.role_name}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
                 </tr>
                 <tr>
                     <th><label for="status">Status</label></th>

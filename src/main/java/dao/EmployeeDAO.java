@@ -158,7 +158,7 @@ public class EmployeeDAO extends DBContext {
 
     public int countItem() {
         try {
-            String query = "SELECT COUNT(emp_id) AS numrow FROM Employee WHERE LOWER(status) = LOWER(N'Active')";
+            String query = "SELECT COUNT(emp_id) AS numrow FROM Employee WHERE LOWER(status) <> 'deleted'";
             ResultSet rs = this.executeSelectionQuery(query, null);
             if (rs.next()) {
                 return rs.getInt(1);
