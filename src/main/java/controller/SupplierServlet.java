@@ -6,11 +6,11 @@ package controller;
 
 import static constant.CommonFunction.addEDtoEverything;
 import static constant.CommonFunction.getTotalPages;
-import static constant.CommonFunction.stringConvertDateTime;
 import static constant.CommonFunction.validateInteger;
 import static constant.CommonFunction.validateString;
 import constant.Constants;
 import dao.RoleDAO;
+import dao.SupplierDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,14 +19,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+
 /**
  *
- * @author Dai Minh Nhu - CE190213
+ * @author TruongBinhTrong
  */
-@WebServlet(name = "RoleServlet", urlPatterns = {"/role"})
-public class RoleServlet extends HttpServlet {
-
+@WebServlet(name = "SupplierServlet", urlPatterns = {"/supplier"})
+public class SupplierServlet extends HttpServlet {
     RoleDAO roleDAO = new RoleDAO();
+    SupplierDAO supplierDAO = new SupplierDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,15 +41,15 @@ public class RoleServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RoleServlet</title>");
+            out.println("<title>Servlet SupplierServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RoleServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SupplierServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -84,7 +85,7 @@ public class RoleServlet extends HttpServlet {
                 id = -1;
             }
 
-            request.setAttribute("currentRole", roleDAO.getElementByID(id));
+            request.setAttribute("currentSupplier", supplierDAO.getElementByID(id));
         } else if (view.equalsIgnoreCase("delete")) {
             namepage = "delete";
         }
@@ -99,9 +100,9 @@ public class RoleServlet extends HttpServlet {
         }
 
         request.setAttribute("totalPages", totalPages);
-        request.setAttribute("rolesList", roleDAO.getAll(page));
+        request.setAttribute("suppliersList", supplierDAO.getAll());
 
-        request.getRequestDispatcher("/WEB-INF/role/" + namepage + ".jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/supplier/" + namepage + ".jsp").forward(request, response);
     }
 
     /**
@@ -120,9 +121,13 @@ public class RoleServlet extends HttpServlet {
         boolean passValidation = true;
         if (action != null && !action.isEmpty()) {
 
-            if (action.equalsIgnoreCase("create")) {
-                String name = request.getParameter("role_name");
-                String description = request.getParameter("description");
+            if (action.equalsIgnoreCase("add")) {
+                String name = request.getParameter("supplierName");
+                String phoneNumber = request.getParameter("phoneNumber");
+                String email = request.getParameter("email");
+                String address = request.getParameter("address");
+                String contactPerson = request.getParameter("contactPerson");
+                       
 
 //validate
                 if (!validateString(name, -1)) {
@@ -130,7 +135,7 @@ public class RoleServlet extends HttpServlet {
                 }
 //end
                 if (passValidation == true) {
-                    if (roleDAO.create(name, description) >= 1) {
+                    if (supplierDAO.add(name, phoneNumber, email, address, contactPerson) >= 1) {
                     } else {
                         passValidation = false;
                     }
@@ -139,7 +144,12 @@ public class RoleServlet extends HttpServlet {
             } else if (action.equalsIgnoreCase("edit")) {
                 int id;
                 String name = request.getParameter("name");
-                String description = request.getParameter("description");
+                String phoneNumber = request.getParameter("phoneNumber");
+                String email = request.getParameter("email");
+                String address = request.getParameter("address");
+                String contactPerson = request.getParameter("contactPerson");
+                String status = request.getParameter("status");
+                
 
                 try {
                     id = Integer.parseInt(request.getParameter("id"));
@@ -156,7 +166,7 @@ public class RoleServlet extends HttpServlet {
                 }
 //end
                 if (passValidation == true) {
-                    int checkError = roleDAO.edit(id, name, description);
+                    int checkError = supplierDAO.edit(id, name, phoneNumber, email, address, contactPerson, status);
 
                     if (checkError >= 1) {
 
@@ -189,7 +199,7 @@ public class RoleServlet extends HttpServlet {
                 }
 //end
                 if (passValidation == true) {
-                    int checkError = roleDAO.delete(id);
+                    int checkError = supplierDAO.delete(id);
 
                     if (checkError >= 1) {
 
@@ -208,7 +218,7 @@ public class RoleServlet extends HttpServlet {
             }
         }
 
-        response.sendRedirect(request.getContextPath() + "/role?" + "status=" + (passValidation ? "success" : "fail") + "&lastAction=" + addEDtoEverything(action));
+        response.sendRedirect(request.getContextPath() + "/supplier?" + "status=" + (passValidation ? "success" : "fail") + "&lastAction=" + addEDtoEverything(action));
 
     }
 
