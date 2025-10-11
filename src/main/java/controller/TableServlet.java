@@ -71,8 +71,8 @@ public class TableServlet extends HttpServlet {
 
         if (!validateString(view, -1) || view.equalsIgnoreCase("list")) {
             namepage = "list";
-        } else if (view.equalsIgnoreCase("create")) {
-            namepage = "create";
+        } else if (view.equalsIgnoreCase("add")) {
+            namepage = "add";
         } else if (view.equalsIgnoreCase("edit")) {
             namepage = "edit";
 
@@ -120,26 +120,26 @@ public class TableServlet extends HttpServlet {
         boolean passValidation = true;
         if (action != null && !action.isEmpty()) {
 
-            if (action.equalsIgnoreCase("create")) {
-                String table_number = request.getParameter("number");
-                int table_capacity;
+            if (action.equalsIgnoreCase("add")) {
+                String number = request.getParameter("number");
+                int capacity;
 
                 try {
-                    table_capacity = Integer.parseInt(request.getParameter("table_capacity"));
+                    capacity = Integer.parseInt(request.getParameter("table_capacity"));
                 } catch (NumberFormatException e) {
-                    table_capacity = -1;
+                    capacity = -1;
 
                     passValidation = false;
                 }
 
 //validate
-                if (!validateString(table_number, 10)
-                        || !validateInteger(table_capacity, false, false, true)) {
+                if (!validateString(number, 10)
+                        || !validateInteger(capacity, false, false, true)) {
                     passValidation = false;
                 }
 //end
                 if (passValidation == true) {
-                    if (tableDAO.create(table_number, table_capacity) >= 1) {
+                    if (tableDAO.add(number, capacity) >= 1) {
                     } else {
                         passValidation = false;
                     }
@@ -148,8 +148,8 @@ public class TableServlet extends HttpServlet {
             } else if (action.equalsIgnoreCase("edit")) {
 
                 int id;
-                String table_number = request.getParameter("number");
-                int table_capacity;
+                String number = request.getParameter("number");
+                int capacity;
 
                 try {
 
@@ -160,23 +160,23 @@ public class TableServlet extends HttpServlet {
                 }
                 try {
                     id = Integer.parseInt(request.getParameter("id"));
-                    table_capacity = Integer.parseInt(request.getParameter("table_capacity"));
+                    capacity = Integer.parseInt(request.getParameter("table_capacity"));
                 } catch (NumberFormatException e) {
                     id = -1;
-                    table_capacity = -1;
+                    capacity = -1;
 
                     passValidation = false;
                 }
 
 //validate
                 if (!validateInteger(id, false, false, true)
-                        || !validateString(table_number, 10)
-                        || !validateInteger(table_capacity, false, false, true)) {
+                        || !validateString(number, 10)
+                        || !validateInteger(capacity, false, false, true)) {
                     passValidation = false;
                 }
 //end
                 if (passValidation == true) {
-                    int checkError = tableDAO.edit(id, table_number, table_capacity);
+                    int checkError = tableDAO.edit(id, number, capacity);
 
                     if (checkError >= 1) {
 

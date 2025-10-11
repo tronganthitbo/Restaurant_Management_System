@@ -2688,3 +2688,13 @@
 127.0.0.1 - admin1 [11/Oct/2025:19:49:31 +0700] "GET /manager/text/list HTTP/1.1" 200 303
 127.0.0.1 - - [11/Oct/2025:19:49:31 +0700] "HEAD /netbeans-tomcat-status-test HTTP/1.1" 404 -
 127.0.0.1 - admin1 [11/Oct/2025:19:49:31 +0700] "GET /manager/text/ HTTP/1.1" 200 39
+127.0.0.1 - - [11/Oct/2025:20:10:20 +0700] "HEAD /netbeans-tomcat-status-test HTTP/1.1" 404 -
+127.0.0.1 - admin1 [11/Oct/2025:20:10:20 +0700] "GET /manager/text/ HTTP/1.1" 200 39
+127.0.0.1 - - [11/Oct/2025:20:10:20 +0700] "HEAD /netbeans-tomcat-status-test HTTP/1.1" 404 -
+127.0.0.1 - admin1 [11/Oct/2025:20:10:20 +0700] "GET /manager/text/ HTTP/1.1" 200 39
+127.0.0.1 - - [11/Oct/2025:20:10:20 +0700] "HEAD /netbeans-tomcat-status-test HTTP/1.1" 404 -
+127.0.0.1 - admin1 [11/Oct/2025:20:10:20 +0700] "GET /manager/text/ HTTP/1.1" 200 39
+127.0.0.1 - admin1 [11/Oct/2025:20:10:20 +0700] "GET /manager/text/list HTTP/1.1" 200 303
+127.0.0.1 - admin1 [11/Oct/2025:20:10:21 +0700] "GET /manager/text/reload?path=/SWP391_RMS HTTP/1.1" 200 68
+127.0.0.1 - - [11/Oct/2025:20:10:21 +0700] "HEAD /netbeans-tomcat-status-test HTTP/1.1" 404 -
+127.0.0.1 - admin1 [11/Oct/2025:20:10:21 +0700] "GET /manager/text/ HTTP/1.1" 200 39

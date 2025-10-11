@@ -15,7 +15,7 @@
 
         <p class="text-end">
             <a href="<c:url value="table">
-                   <c:param name="view" value="create"/>
+                   <c:param name="view" value="add"/>
                </c:url>" class="btn btn-success">Add New</a>
         </p>
 
@@ -38,18 +38,18 @@
                     <c:otherwise>
                         <c:forEach var="table" items="${tablesList}" varStatus="loop">
                             <tr>
-                                <td><c:out value="${table.table_id}"/></td>
-                                <td><c:out value="${table.table_number}"/></td>
-                                <td><c:out value="${table.table_capacity}"/></td>
+                                <td><c:out value="${table.id}"/></td>
+                                <td><c:out value="${table.number}"/></td>
+                                <td><c:out value="${table.capacity}"/></td>
 
                                 <td>
                                     <a href="<c:url value="table">
                                            <c:param name="view" value="edit"/>
-                                           <c:param name="id" value="${table.table_id}"/>
+                                           <c:param name="id" value="${table.id}"/>
                                        </c:url>" class="btn btn-primary">
                                         Edit
                                     </a>
-                                    <button type="button" class="btn btn-danger" onclick="showDeletePopup(${table.table_id})">
+                                    <button type="button" class="btn btn-danger" onclick="showDeletePopup(${table.id})">
                                         Delete
                                     </button>        
                                 </td>
@@ -131,10 +131,10 @@
                 <div class="modal-body">
                     <c:choose>
                         <c:when test="${param.status eq 'success'}">
-                            <p style="color: green">The promotion <c:out value="${param.lastAction}"/> successfully.</p>
+                            <p style="color: green">The action <c:out value="${param.lastAction}"/> successfully.</p>
                         </c:when>
                         <c:otherwise>
-                            <p style="color: red">Failed to <c:out value="${param.lastAction}"/> the promotion. Please check the information.</p>
+                            <p style="color: red">Failed to <c:out value="${param.lastAction}"/>. Please check the information.</p>
                         </c:otherwise>
                     </c:choose>
                 </div>
