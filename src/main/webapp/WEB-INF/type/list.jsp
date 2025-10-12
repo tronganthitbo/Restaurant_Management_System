@@ -1,9 +1,3 @@
-<%-- 
-    Document   : list
-    Created on : 21 Sep 2025, 10:04:02 AM
-    Author     : Dai Minh Nhu - CE190213
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/include/header.jsp" %>
@@ -11,10 +5,10 @@
 <main>
     <div class="container">
 
-        <h2>Supplier list</h2>
+        <h2>Type list</h2>
 
         <p class="text-end">
-            <a href="<c:url value="supplier">
+            <a href="<c:url value="type">
                    <c:param name="view" value="add"/>
                </c:url>" class="btn btn-success">Add New</a>
         </p>
@@ -24,39 +18,32 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Phone Number</th>
-                    <th>Email</th>
-                    <th>Address</th>
-                    <th>Contact Person</th>
+                    <th>Description</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <c:choose>
-                    <c:when test="${suppliersList == null || empty suppliersList}">
+                    <c:when test="${typesList == null || empty typesList}">
                         <tr>
                             <td colspan="8" style="color:red;">No data to display</td>
                         </tr>   
                     </c:when>
                     <c:otherwise>
-                        <c:forEach var="supplier" items="${suppliersList}" varStatus="loop">
+                        <c:forEach var="type" items="${typesList}" varStatus="loop">
                             <tr>
-                                <td><c:out value="${supplier.supplierId}"/></td>
-                                <td><c:out value="${supplier.supplierName}"/></td>
-                                <td><c:out value="${supplier.phoneNumber}"/></td>
-                                <td><c:out value="${supplier.email}"/></td>
-                                <td><c:out value="${supplier.address}"/></td>
-                                <td><c:out value="${supplier.contactPerson}"/></td>
+                                <td><c:out value="${type.typeId}"/></td>
+                                <td><c:out value="${type.typeName}"/></td>
+                                <td><c:out value="${type.description}"/></td>
 
                                 <td>
-                                    <a href="<c:url value="supplier">
+                                    <a href="<c:url value="type">
                                            <c:param name="view" value="edit"/>
-                                           <c:param name="id" value="${supplier.supplierId}"/>
-                                       </c:url>" 
-                                       class="btn btn-primary">
+                                           <c:param name="id" value="${type.typeId}"/>
+                                       </c:url>" class="btn btn-primary">
                                         Edit
                                     </a>
-                                    <button type="button" class="btn btn-danger" onclick="showDeletePopup(${supplier.supplierId})">
+                                    <button type="button" class="btn btn-danger" onclick="showDeletePopup(${type.typeId})">
                                         Delete
                                     </button>        
                                 </td>
@@ -69,7 +56,7 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 <li class="page-item ${((empty param.page) || param.page <= 1)?"disabled":""}">
-                    <a class="page-link" href="<c:url value="/supplier">
+                    <a class="page-link" href="<c:url value="/type">
                            <c:param name="view" value="list"/>
                            <c:param name="page" value="${param.page - 1}"/>
                        </c:url>" aria-label="Previous">
@@ -78,13 +65,13 @@
                 </li>
                 <c:forEach begin="1" end="${requestScope.totalPages}" var="i">
                     <li class="page-item ${((empty param.page && i == 1) || param.page == i)?"active":""}">
-                        <a class="page-link" href="<c:url value="/supplier">
+                        <a class="page-link" href="<c:url value="/type">
                                <c:param name="view" value="list"/>
                                <c:param name="page" value="${i}"/>
                            </c:url>">${i}</a></li>
                     </c:forEach>
                 <li class="page-item ${(requestScope.totalPages <= param.page || requestScope.totalPages eq 1 )?"disabled":""}">
-                    <a class="page-link" href="<c:url value="/supplier">
+                    <a class="page-link" href="<c:url value="/type">
                            <c:param name="view" value="list"/>
                            <c:param name="page" value="${(empty param.page)?2:param.page + 1}"/>
                        </c:url>" aria-label="Next">
@@ -104,10 +91,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-danger">
-                <h6 id="idForDeletePopup">Are you sure you want to delete this supplier?</h6>
+                <h6 id="idForDeletePopup">Are you sure you want to delete this type?</h6>
                 <small class="text-muted">This action cannot be undone.</small>
             </div>
-            <form method="post" action="<c:url value="supplier"/>">
+            <form method="post" action="<c:url value="type"/>">
                 <input type="hidden" id="hiddenInputIdDelete" name="id" value="">
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -121,7 +108,7 @@
 <script>
     function showDeletePopup(id) {
         document.getElementById("hiddenInputIdDelete").value = id;
-        document.getElementById("idForDeletePopup").textContent = "Are you sure you want to delete the supplier with id = " + id + "?";
+        document.getElementById("idForDeletePopup").textContent = "Are you sure you want to delete the type with id = " + id + "?";
         var myModal = new bootstrap.Modal(document.getElementById('deletePopup'));
         myModal.show();
     }
@@ -138,10 +125,10 @@
                 <div class="modal-body">
                     <c:choose>
                         <c:when test="${param.status eq 'success'}">
-                            <p style="color: green">The supplier <c:out value="${param.lastAction}"/> successfully.</p>
+                            <p style="color: green">The promotion <c:out value="${param.lastAction}"/> successfully.</p>
                         </c:when>
                         <c:otherwise>
-                            <p style="color: red">Failed to <c:out value="${param.lastAction}"/> the supplier. Please check the information.</p>
+                            <p style="color: red">Failed to <c:out value="${param.lastAction}"/> the promotion. Please check the information.</p>
                         </c:otherwise>
                     </c:choose>
                 </div>

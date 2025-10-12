@@ -85,24 +85,15 @@
                             </td>
                         </tr>
 
-                        <tr>
-                            <th>
-                                <label for="status">Status</label>
-                            </th>
-                            <td>
-                                <select name="status" id="status" class="form-control">
-                                    <option value="active" <c:if test="${currentSupplier.status == 'Active'}">selected</c:if>>Active</option>
-                                    <option value="deleted" <c:if test="${currentSupplier.status == 'Deleted'}">selected</c:if>>Deleted</option>
-                                    </select>
-                                </td>
-                            </tr>
+                        <input type="hidden" name="status" id="status" value="${currentSupplier.status}">
 
-                            <tr>
-                                <td>
-                                </td>
-                                <td>
-                                    <button class="btn btn-success" type="submit" name="action" value="edit">Save</button>
-                                    <a class="btn btn-outline-dark" href="<c:url value="supplier"/>">Cancel</a>
+
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                <button class="btn btn-success" type="submit" name="action" value="edit">Save</button>
+                                <a class="btn btn-outline-dark" href="<c:url value="supplier"/>">Cancel</a>
                             </td>
                         </tr>
                     </table>
