@@ -35,7 +35,7 @@ body, html {
 
     width: 50vw;
     height: 83vh;
-    background-image: url('../../assets/img/background.png');
+    background-image: url('../images/background.png');
     
     background-repeat: no-repeat;
     background-position: center;

@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Restwo Register</title>
+  <title>Restwo Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link href="${pageContext.request.contextPath}/ui/assets/css/style.css" rel="stylesheet" />
+  <link href="${pageContext.request.contextPath}/assets/css/uistyle.css" rel="stylesheet" />
 </head>
 <body>
   <div class="bg">
@@ -20,17 +20,16 @@
   <div class="container">
     <div class="login-box">
       <div class="logo">Restwo.</div>
-      <h2>Create Account</h2>
-      <p>Join us to stay connected.</p>
-        <input type="text" placeholder="Fullname" />
+      <h2>Sign In</h2>
+      <p>Sign in to stay connected.</p>
       <input type="text" placeholder="Username" />
       <input type="password" placeholder="Password" />
-      <input type="password" placeholder="Confirm Password" />
-      
-      <button>Sign up</button>
-      
+      <div class="options">
+        <a href="#">Forgot Password</a>
+      </div>
+      <button>Sign in</button>
       <div class="signup">
-        Already have an account? <a href="#">Click here to sign in.</a>
+        Don?t have an account? <a href="${pageContext.request.contextPath}/register">Click here to sign up.</a>
       </div>
     </div>
   </div>

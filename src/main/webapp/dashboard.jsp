@@ -7,7 +7,7 @@
 
         <!--style-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
-        <link href="${pageContext.request.contextPath}/ui/assets/css/styles.css" rel="stylesheet" />
+      <link href="${pageContext.request.contextPath}/assets/css/uistyles.css" rel="stylesheet" />
         <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   
     </head>
@@ -15,64 +15,8 @@
     <body>
         <div class="d-flex dashboard-container">
             <!-- Sidebar -->
-            <aside class="sidebar">
-                <div class="sidebar-logo">
-                    <img
-                        src="${pageContext.request.contextPath}/ui/assets/img/restlogo.png"
-                        alt="Restaurant Logo"
-                        />
-                </div>
-                <nav class="d-flex flex-column">
-                    <a href="${pageContext.request.contextPath}/dashboard" class="nav-item-custom active"
-                       ><i class="fas fa-tachometer-alt"></i> Dashboard</a
-                    >
-                    <a href="${pageContext.request.contextPath}/profile" class="nav-item-custom"
-                       ><i class="fas fa-user"></i> Profile</a
-                    >
-                    <a href="${pageContext.request.contextPath}/role" class="nav-item-custom"
-                       ><i class="fas fa-user-shield"></i> Role List</a
-                    >
-                    <a href="${pageContext.request.contextPath}/account" class="nav-item-custom"
-                       ><i class="fas fa-address-card"></i> Account List</a
-                    >
-                    <a href="${pageContext.request.contextPath}/category" class="nav-item-custom"
-                       ><i class="fas fa-tags"></i> Category List</a
-                    >
-                    <a href="${pageContext.request.contextPath}/menu" class="nav-item-custom"
-                       ><i class="fas fa-utensils"></i> Menu Item List</a
-                    >
-                    <a href="${pageContext.request.contextPath}/order" class="nav-item-custom"
-                       ><i class="fas fa-receipt"></i> Order List</a
-                    >
-                    <a href="${pageContext.request.contextPath}/recipe" class="nav-item-custom"
-                       ><i class="fas fa-book-open"></i> Recipe List</a
-                    >
-                    <a href="${pageContext.request.contextPath}/ingredient" class="nav-item-custom"
-                       ><i class="fas fa-apple-alt"></i> Ingredient List</a
-                    >
-                    <a href="${pageContext.request.contextPath}/type" class="nav-item-custom"
-                       ><i class="fas fa-layer-group"></i> Type List</a
-                    >
-                    <a href="${pageContext.request.contextPath}/import" class="nav-item-custom"
-                       ><i class="fas fa-file-import"></i> Import List</a
-                    >
-                    <a href="${pageContext.request.contextPath}/supplier" class="nav-item-custom"
-                       ><i class="fas fa-truck"></i> Supplier List</a
-                    >
-                    <a href="${pageContext.request.contextPath}/employee" class="nav-item-custom"
-                       ><i class="fas fa-users"></i> Employee List</a
-                    >
-                    <a href="${pageContext.request.contextPath}/table" class="nav-item-custom"
-                       ><i class="fas fa-table"></i> Table List</a
-                    >
-                    <a href="${pageContext.request.contextPath}/reservation" class="nav-item-custom"
-                       ><i class="fas fa-calendar-check"></i> Reservation List</a
-                    >
-                    <a href="${pageContext.request.contextPath}/voucher" class="nav-item-custom"
-                       ><i class="fas fa-ticket-alt"></i> Voucher List</a
-                    >
-                </nav>
-            </aside>
+      <%@include file="/WEB-INF/include/sidebar.jsp" %>
+
 
             <!-- Main Content -->
             <main class="main-content">
