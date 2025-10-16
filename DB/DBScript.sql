@@ -1,4 +1,6 @@
 --Lưu ý: Đặt tên cho database: RestaurantManagement
+USE master
+GO
 
 -- Xóa DB cũ nếu tồn tại
 IF DB_ID('RestaurantManagement') IS NOT NULL
