@@ -1,4 +1,4 @@
-﻿﻿USE RestaurantManagement;
+﻿USE RestaurantManagement;
 GO
 
 -- Bật cho phép chèn dữ liệu Unicode
