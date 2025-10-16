@@ -12,16 +12,13 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Dai Minh Nhu - CE190213
- */
+
 public class DBContext {
 
     private Connection conn;
     private final String DB_URL = "jdbc:sqlserver://127.0.0.1:1433;databaseName=RestaurantManagement;encrypt=false";
     private final String DB_USER = "sa";
-    private final String DB_PWD = "123456";
+    private final String DB_PWD = "6789";
 
     public DBContext() {
         try {

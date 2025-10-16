@@ -21,9 +21,9 @@
         <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
         <!-- Fonts -->
-        <link href="https://fonts.googleapis.com" rel="preconnect">
-        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
         <!-- Vendor CSS Files -->
         <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -33,8 +33,8 @@
         <!-- Main Site CSS -->
         <link href="assets/css/main.css" rel="stylesheet">
 
-        <!-- Admin Listing CSS -->
-        <link href="assets/css/dashboard.css" rel="stylesheet">
+    <!-- Admin Listing CSS -->
+    <link href="assets/css/admin-list.css" rel="stylesheet">
     </head>
 
     <body class="admin-list-page">
@@ -87,7 +87,7 @@
                         <div class="content-card shadow-sm">
                             <div class="card-header border-0 px-4 py-3 d-flex flex-column flex-md-row gap-3 gap-md-0 justify-content-between align-items-md-center">
                                 <div>
-                                    <h1 class="section-title mb-1">Supplier List</h1>
+                                    <h1 class="section-title mb-1">Type List</h1>
                                 </div>
                                 <div class="actions d-flex flex-column flex-md-row gap-2 align-items-md-center justify-content-md-end">
                                     <div class="filters d-flex flex-wrap gap-2 justify-content-end">
@@ -102,7 +102,7 @@
                                             <option>Completed</option>
                                             <option>Cancelled</option>
                                         </select>
-                                        <a class="btn btn-primary add-btn" href="<c:url value="supplier">
+                                        <a class="btn btn-primary add-btn" href="<c:url value="type">
                                                <c:param name="view" value="add"/>
                                            </c:url>"><i class="bi bi-plus-circle"></i> Add</a>
 
@@ -116,35 +116,29 @@
                                         <tr>
                                             <th scope="col">No.</th>
                                             <th scope="col">Name</th>
-                                            <th scope="col">Phone Number</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">Address</th>
-                                            <th scope="col">Contact Person</th>
+                                            <th scope="col">Description</th>
                                             <th scope="col" class="text-end">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <c:choose>
-                                            <c:when test="${suppliersList == null || empty suppliersList}">
+                                            <c:when test="${typesList == null || empty typesList}">
                                                 <tr>
                                                     <td colspan="9" style="color:red;">No data to display</td>
                                                 </tr>   
                                             </c:when>
                                             <c:otherwise>
-                                                <c:forEach var="supplier" items="${suppliersList}" varStatus="loop">
+                                                <c:forEach var="type" items="${typesList}" varStatus="loop">
                                                     <tr>
                                                         <td><c:out value="${loop.index + 1}"/></td>
-                                                        <td><c:out value="${supplier.supplierName}"/></td>
-                                                        <td><c:out value="${supplier.phoneNumber}"/></td>
-                                                        <td><c:out value="${supplier.email}"/></td>
-                                                        <td><c:out value="${supplier.address}"/></td>
-                                                        <td><c:out value="${supplier.contactPerson}"/></td>
+                                                        <td><c:out value="${type.typeName}"/></td>
+                                                        <td><c:out value="${type.description}"/></td>
 
                                                         <td class="text-end">
                                                             <div class="action-button-group d-flex justify-content-end gap-2">
-                                                                <c:url var="edit" value="supplier">
+                                                                <c:url var="edit" value="type">
                                                                     <c:param name="view" value="edit"/>
-                                                                    <c:param name="id" value="${supplier.supplierId}"/>
+                                                                    <c:param name="id" value="${type.typeId}"/>
                                                                 </c:url>
                                                                 <a class="btn btn-outline-secondary btn-icon btn-edit"
                                                                    title="Edit"
@@ -153,7 +147,7 @@
                                                                     <i class="bi bi-pencil"></i>
                                                                 </a>
 
-                                                                <button type="button" class="btn btn-outline-secondary btn-icon btn-delete" title="Delete" aria-label="Delete" onclick="showDeletePopup('${supplier.supplierId}')">
+                                                                <button type="button" class="btn btn-outline-secondary btn-icon btn-delete" title="Delete" aria-label="Delete" onclick="showDeletePopup('${type.typeId}')">
                                                                     <i class="bi bi-x-circle"></i>
                                                                 </button>
                                                             </div>
@@ -179,10 +173,10 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body text-danger">
-                        <h6 id="idForDeletePopup">Are you sure you want to delete this supplier?</h6>
+                        <h6 id="idForDeletePopup">Are you sure you want to delete this type?</h6>
                         <small class="text-muted">This action cannot be undone.</small>
                     </div>
-                    <form method="post" action="<c:url value="supplier"/>">
+                    <form method="post" action="<c:url value="type"/>">
                         <input type="hidden" id="hiddenInputIdDelete" name="id" value="">
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -212,10 +206,10 @@
                     <div class="modal-body">
                         <c:choose>
                             <c:when test="${param.status eq 'success'}">
-                                <p style="color: green">The supplier <c:out value="${param.lastAction}"/> successfully.</p>
+                                    <p style="color: green">The Type <c:out value="${param.lastAction}"/> successfully.</p>
                             </c:when>
                             <c:otherwise>
-                                <p style="color: red">Failed to <c:out value="${param.lastAction}"/> the supplier. Please check the information.</p>
+                                <p style="color: red">Failed to <c:out value="${param.lastAction}"/> the type. Please check the information.</p>
                             </c:otherwise>
                         </c:choose>
                     </div>
@@ -237,7 +231,7 @@
     <script>
         function showDeletePopup(id) {
             document.getElementById("hiddenInputIdDelete").value = id;
-            document.getElementById("idForDeletePopup").textContent = "Are you sure you want to delete the supplier with id = " + id + "?";
+            document.getElementById("idForDeletePopup").textContent = "Are you sure you want to delete the type with id = " + id + "?";
             var myModal = new bootstrap.Modal(document.getElementById('deletePopup'));
             myModal.show();
         }

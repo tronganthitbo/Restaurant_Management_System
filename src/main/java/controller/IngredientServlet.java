@@ -9,7 +9,7 @@ import static constant.CommonFunction.getTotalPages;
 import static constant.CommonFunction.validateInteger;
 import static constant.CommonFunction.validateString;
 import constant.Constants;
-import dao.SupplierDAO;
+import dao.IngredientDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,14 +18,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
 /**
  *
  * @author TruongBinhTrong
  */
-@WebServlet(name = "SupplierServlet", urlPatterns = {"/supplier"})
-public class SupplierServlet extends HttpServlet {
-    SupplierDAO supplierDAO = new SupplierDAO();
+@WebServlet(name = "IngredientServlet", urlPatterns = {"/ingredient"})
+public class IngredientServlet extends HttpServlet {
+    IngredientDAO ingredientDAO = new IngredientDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,10 +43,10 @@ public class SupplierServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SupplierServlet</title>");
+            out.println("<title>Servlet IngredientServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SupplierServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet IngredientServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -83,13 +82,13 @@ public class SupplierServlet extends HttpServlet {
                 id = -1;
             }
 
-            request.setAttribute("currentSupplier", supplierDAO.getElementByID(id));
+            request.setAttribute("currentIngredient", ingredientDAO.getElementByID(id));
         } else if (view.equalsIgnoreCase("delete")) {
             namepage = "delete";
         }
 
         int page;
-        int totalPages = getTotalPages(supplierDAO.countItem());
+        int totalPages = getTotalPages(ingredientDAO.countItem());
 
         try {
             page = Integer.parseInt(request.getParameter("page"));
@@ -98,9 +97,9 @@ public class SupplierServlet extends HttpServlet {
         }
 
         request.setAttribute("totalPages", totalPages);
-        request.setAttribute("suppliersList", supplierDAO.getAll());
+        request.setAttribute("ingredientsList", ingredientDAO.getAll());
 
-        request.getRequestDispatcher("/WEB-INF/supplier/" + namepage + ".jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/ingredient/" + namepage + ".jsp").forward(request, response);
     }
 
     /**
@@ -114,18 +113,14 @@ public class SupplierServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
+         String action = request.getParameter("action");
 
         boolean passValidation = true;
         if (action != null && !action.isEmpty()) {
 
             if (action.equalsIgnoreCase("add")) {
-                String name = request.getParameter("supplierName");
-                String phoneNumber = request.getParameter("phoneNumber");
-                String email = request.getParameter("email");
-                String address = request.getParameter("address");
-                String contactPerson = request.getParameter("contactPerson");
-                       
+                String name = request.getParameter("name");
+                String typeName = request.getParameter("type");
 
 //validate
                 if (!validateString(name, -1)) {
@@ -133,7 +128,7 @@ public class SupplierServlet extends HttpServlet {
                 }
 //end
                 if (passValidation == true) {
-                    if (supplierDAO.add(name, phoneNumber, email, address, contactPerson) >= 1) {
+                    if (ingredientDAO.add(name, typeName) >= 1) {
                     } else {
                         passValidation = false;
                     }
@@ -142,12 +137,7 @@ public class SupplierServlet extends HttpServlet {
             } else if (action.equalsIgnoreCase("edit")) {
                 int id;
                 String name = request.getParameter("name");
-                String phoneNumber = request.getParameter("phoneNumber");
-                String email = request.getParameter("email");
-                String address = request.getParameter("address");
-                String contactPerson = request.getParameter("contactPerson");
-                String status = request.getParameter("status");
-                
+                String typeName = request.getParameter("type");
 
                 try {
                     id = Integer.parseInt(request.getParameter("id"));
@@ -164,7 +154,7 @@ public class SupplierServlet extends HttpServlet {
                 }
 //end
                 if (passValidation == true) {
-                    int checkError = supplierDAO.edit(id, name, phoneNumber, email, address, contactPerson, status);
+                    int checkError = ingredientDAO.edit(id, name, typeName);
 
                     if (checkError >= 1) {
 
@@ -197,7 +187,7 @@ public class SupplierServlet extends HttpServlet {
                 }
 //end
                 if (passValidation == true) {
-                    int checkError = supplierDAO.delete(id);
+                    int checkError = ingredientDAO.delete(id);
 
                     if (checkError >= 1) {
 
@@ -216,7 +206,7 @@ public class SupplierServlet extends HttpServlet {
             }
         }
 
-        response.sendRedirect(request.getContextPath() + "/supplier?" + "status=" + (passValidation ? "success" : "fail") + "&lastAction=" + addEDtoEverything(action));
+        response.sendRedirect(request.getContextPath() + "/ingredient?" + "status=" + (passValidation ? "success" : "fail") + "&lastAction=" + addEDtoEverything(action));
 
     }
 

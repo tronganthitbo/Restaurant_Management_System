@@ -9,7 +9,7 @@ import static constant.CommonFunction.getTotalPages;
 import static constant.CommonFunction.validateInteger;
 import static constant.CommonFunction.validateString;
 import constant.Constants;
-import dao.SupplierDAO;
+import dao.TypeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,15 +18,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
 /**
  *
  * @author TruongBinhTrong
  */
-@WebServlet(name = "SupplierServlet", urlPatterns = {"/supplier"})
-public class SupplierServlet extends HttpServlet {
-    SupplierDAO supplierDAO = new SupplierDAO();
-
+@WebServlet(name = "TypeServlet", urlPatterns = {"/type"})
+public class TypeServlet extends HttpServlet {
+    TypeDAO typeDAO = new TypeDAO();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,10 +42,10 @@ public class SupplierServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SupplierServlet</title>");
+            out.println("<title>Servlet TypeServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SupplierServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet TypeServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -83,13 +81,13 @@ public class SupplierServlet extends HttpServlet {
                 id = -1;
             }
 
-            request.setAttribute("currentSupplier", supplierDAO.getElementByID(id));
+            request.setAttribute("currentType", typeDAO.getElementByID(id));
         } else if (view.equalsIgnoreCase("delete")) {
             namepage = "delete";
         }
 
         int page;
-        int totalPages = getTotalPages(supplierDAO.countItem());
+        int totalPages = getTotalPages(typeDAO.countItem());
 
         try {
             page = Integer.parseInt(request.getParameter("page"));
@@ -98,9 +96,9 @@ public class SupplierServlet extends HttpServlet {
         }
 
         request.setAttribute("totalPages", totalPages);
-        request.setAttribute("suppliersList", supplierDAO.getAll());
+        request.setAttribute("typesList", typeDAO.getAll());
 
-        request.getRequestDispatcher("/WEB-INF/supplier/" + namepage + ".jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/type/" + namepage + ".jsp").forward(request, response);
     }
 
     /**
@@ -120,12 +118,8 @@ public class SupplierServlet extends HttpServlet {
         if (action != null && !action.isEmpty()) {
 
             if (action.equalsIgnoreCase("add")) {
-                String name = request.getParameter("supplierName");
-                String phoneNumber = request.getParameter("phoneNumber");
-                String email = request.getParameter("email");
-                String address = request.getParameter("address");
-                String contactPerson = request.getParameter("contactPerson");
-                       
+                String name = request.getParameter("typeName");
+                String description = request.getParameter("description");
 
 //validate
                 if (!validateString(name, -1)) {
@@ -133,7 +127,7 @@ public class SupplierServlet extends HttpServlet {
                 }
 //end
                 if (passValidation == true) {
-                    if (supplierDAO.add(name, phoneNumber, email, address, contactPerson) >= 1) {
+                    if (typeDAO.add(name, description) >= 1) {
                     } else {
                         passValidation = false;
                     }
@@ -142,12 +136,7 @@ public class SupplierServlet extends HttpServlet {
             } else if (action.equalsIgnoreCase("edit")) {
                 int id;
                 String name = request.getParameter("name");
-                String phoneNumber = request.getParameter("phoneNumber");
-                String email = request.getParameter("email");
-                String address = request.getParameter("address");
-                String contactPerson = request.getParameter("contactPerson");
-                String status = request.getParameter("status");
-                
+                String description = request.getParameter("description");
 
                 try {
                     id = Integer.parseInt(request.getParameter("id"));
@@ -164,7 +153,7 @@ public class SupplierServlet extends HttpServlet {
                 }
 //end
                 if (passValidation == true) {
-                    int checkError = supplierDAO.edit(id, name, phoneNumber, email, address, contactPerson, status);
+                    int checkError = typeDAO.edit(id, name, description);
 
                     if (checkError >= 1) {
 
@@ -197,7 +186,7 @@ public class SupplierServlet extends HttpServlet {
                 }
 //end
                 if (passValidation == true) {
-                    int checkError = supplierDAO.delete(id);
+                    int checkError = typeDAO.delete(id);
 
                     if (checkError >= 1) {
 
@@ -216,7 +205,7 @@ public class SupplierServlet extends HttpServlet {
             }
         }
 
-        response.sendRedirect(request.getContextPath() + "/supplier?" + "status=" + (passValidation ? "success" : "fail") + "&lastAction=" + addEDtoEverything(action));
+        response.sendRedirect(request.getContextPath() + "/type?" + "status=" + (passValidation ? "success" : "fail") + "&lastAction=" + addEDtoEverything(action));
 
     }
 

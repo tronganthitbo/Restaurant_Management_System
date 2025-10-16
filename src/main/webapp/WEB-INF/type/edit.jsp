@@ -23,7 +23,7 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com" rel="preconnect">
         <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
         <!-- Vendor CSS Files -->
         <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -61,9 +61,9 @@
         <main class="admin-layout">
             <div class="container">
                 <c:choose>
-                    <c:when test="${not empty currentSupplier}">
-                        <h1 class="mt-5">Edit Supplier</h1>
-                        <form method="post" action="<c:url value='supplier'>
+                    <c:when test="${not empty currentType}">
+                        <h1 class="mt-5">Edit Type</h1>
+                        <form method="post" action="<c:url value='type'>
                                   <c:param name='id' value='${param.id}'/>
                               </c:url>">
                             <table class="table">
@@ -79,7 +79,7 @@
                                         <label for="id">ID</label>
                                     </th>
                                     <td>
-                                        <label name="id" id="id"><c:out value="${currentSupplier.supplierId}"/></label>
+                                        <label name="id" id="id"><c:out value="${currentType.typeId}"/></label>
                                     </td>
                                 </tr>
 
@@ -88,43 +88,16 @@
                                         <label for="name">Name</label>
                                     </th>
                                     <td>
-                                        <input type="text" name="name" id="name" value="<c:out value='${currentSupplier.supplierName}'/>" class="form-control" required>
+                                        <input type="text" name="name" id="name" value="<c:out value='${currentTpe.typeName}'/>" class="form-control" required>
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <th>
-                                        <label for="phoneNumber">Phone Number</label>
+                                        <label for="description">Description</label>
                                     </th>
                                     <td>
-                                        <input type="text" name="phoneNumber" id="phoneNumber" value="<c:out value='${currentSupplier.phoneNumber}'/>" class="form-control">
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <th>
-                                        <label for="email">Email</label>
-                                    </th>
-                                    <td>
-                                        <input type="text" name="email" id="email" value="<c:out value='${currentSupplier.email}'/>" class="form-control">
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <th>
-                                        <label for="address">Address</label>
-                                    </th>
-                                    <td>
-                                        <input type="text" name="address" id="address" value="<c:out value='${currentSupplier.address}'/>" class="form-control">
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <th>
-                                        <label for="contactPerson">Contact Person</label>
-                                    </th>
-                                    <td>
-                                        <input type="text" name="contactPerson" id="contactPerson" value="<c:out value='${currentSupplier.contactPerson}'/>" class="form-control">
+                                        <input type="text" name="description" id="description" value="<c:out value='${currentType.description}'/>" class="form-control">
                                     </td>
                                 </tr>
 
@@ -136,15 +109,15 @@
                                     </td>
                                     <td>
                                         <button class="btn btn-success" type="submit" name="action" value="edit">Save</button>
-                                        <a class="btn btn-outline-dark" href="<c:url value='supplier'/>">Cancel</a>
+                                        <a class="btn btn-outline-dark" href="<c:url value='type'/>">Cancel</a>
                                     </td>
                                 </tr>
                             </table>
                         </form>
                     </c:when>
                     <c:otherwise>
-                        <h2 class="mt-5">Not found the supplier which id <c:out value="${param.id}"/>. Please check the information.</h2>
-                        <a class="btn btn-outline-dark" href="<c:url value='supplier'/>">Back</a>
+                        <h2 class="mt-5">Not found the type which id <c:out value="${param.id}"/>. Please check the information.</h2>
+                        <a class="btn btn-outline-dark" href="<c:url value='type'/>">Back</a>
                     </c:otherwise>
                 </c:choose>
             </div>
