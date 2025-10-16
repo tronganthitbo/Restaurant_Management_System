@@ -13,105 +13,107 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Supplier;
-import model.Type;
+import model.Ingredient;
 
 /**
  *
  * @author TruongBinhTrong
  */
-public class TypeDAO extends DBContext {
-    public List<Type> getAll() {
-        List<Type> list = new ArrayList<>();
+public class IngredientDAO extends DBContext {
+
+    public List<Ingredient> getAll() {
+        List<Ingredient> list = new ArrayList<>();
 
         try {
-            String query = "SELECT *"
-                    + "FROM type AS s\n"
-                    + "WHERE LOWER(s.status) != LOWER(N'Deleted')\n"
-                    + "ORDER BY s.type_id";
+            String query
+                    = "SELECT * "
+                    + "FROM ingredient i "
+                    + "JOIN type t ON i.type_id = t.type_id "
+                    + "WHERE LOWER(i.status) != LOWER(N'Deleted') "
+                    + "ORDER BY i.ingredient_id";
 
             ResultSet rs = this.executeSelectionQuery(query, null);
 
             while (rs.next()) {
-                Type type = new Type(
-                        rs.getInt("type_id"), 
+                Ingredient ingredient = new Ingredient(
+                        rs.getInt("ingredient_id"),
+                        rs.getString("ingredient_name"),
                         rs.getString("type_name"),
-                        rs.getString("description"), 
                         rs.getString("status")
                 );
 
-                list.add(type);
+                list.add(ingredient);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(TypeDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IngredientDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return list;
     }
 
-    public List<Type> getAll(int page) {
-        List<Type> list = new ArrayList<>();
+    public List<Ingredient> getAll(int page) {
+        List<Ingredient> list = new ArrayList<>();
 
         try {
             String query = "SELECT *\n"
-                    + "FROM     type\n"
+                    + "FROM     ingredient\n"
                     + "WHERE  (LOWER(status) != LOWER(N'Deleted'))\n"
-                    + "ORDER BY type_id\n"
+                    + "ORDER BY ingredient_id\n"
                     + "OFFSET ? ROWS \n"
                     + "FETCH NEXT ? ROWS ONLY;";
 
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{(page - 1) * MAX_ELEMENTS_PER_PAGE, MAX_ELEMENTS_PER_PAGE});
 
             while (rs.next()) {
-                Type type = new Type(
-                        rs.getInt("type_id"), 
-                        rs.getString("type_name"),
-                        rs.getString("description"), 
+                Ingredient ingredient = new Ingredient(
+                        rs.getInt("ingredient_id"),
+                        rs.getString("ingredient_name"),
+                        rs.getString("typeName"),
                         rs.getString("status")
                 );
 
-                list.add(type);
+                list.add(ingredient);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(TypeDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IngredientDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return list;
     }
 
-    public Type getElementByID(int id) {
+    public Ingredient getElementByID(int id) {
 
         try {
             String query = "SELECT *\n"
-                    + "FROM     type\n"
-                    + "WHERE  (type_id = ? and LOWER(status) != LOWER(N'Deleted'))\n";
+                    + "FROM     ingredient\n"
+                    + "WHERE  (ingredient_id = ? and LOWER(status) != LOWER(N'Deleted'))\n";
 
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{id});
 
             while (rs.next()) {
 
-                Type type = new Type(
-                        rs.getInt(1), 
-                        rs.getString(2), 
-                        rs.getString(3), 
+                Ingredient ingredient = new Ingredient(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
                         rs.getString(4)
                 );
 
-                return type;
+                return ingredient;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(TypeDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IngredientDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return null;
     }
 
-    public int add(String type_name, String description) {
+    public int add(String ingredient_name, String type_name) {
         try {
-            String query = "INSERT INTO type (type_name, description, status)\n"
+            String query = "INSERT INTO ingredient (ingredient_name, type_name, status)\n"
                     + "VALUES (?, ?, ?)";
 
-            return this.executeQuery(query, new Object[]{type_name, description, "Active"});
+            return this.executeQuery(query, new Object[]{ingredient_name, type_name, "Active"});
 
         } catch (SQLException ex) {
 
@@ -120,19 +122,19 @@ public class TypeDAO extends DBContext {
                 return sqlError;
             }
 
-            Logger.getLogger(TypeDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IngredientDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
     }
 
-    public int edit(int type_id, String type_name, String description) {
+    public int edit(int ingredient_id, String ingredient_name, String type_name) {
         try {
 
-            String query = "UPDATE type\n"
-                    + "SET type_name = ?, description = ?\n"
-                    + "WHERE  (type_id = ?)";
+            String query = "UPDATE ingredient\n"
+                    + "SET ingredient_name = ?, type_name = ?\n"
+                    + "WHERE  (ingredient_id = ?)";
 
-            return this.executeQuery(query, new Object[]{type_name, description, type_id});
+            return this.executeQuery(query, new Object[]{ingredient_name, type_name, ingredient_id});
 
         } catch (SQLException ex) {
 
@@ -141,16 +143,16 @@ public class TypeDAO extends DBContext {
                 return sqlError;
             }
 
-            Logger.getLogger(TypeDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IngredientDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
     }
 
     public int delete(int id) {
         try {
-            String query = "UPDATE type\n"
+            String query = "UPDATE ingredient\n"
                     + "SET status = 'Deleted'\n"
-                    + "WHERE  (type_id = ?)";
+                    + "WHERE  (ingredient_id = ?)";
 
             return this.executeQuery(query, new Object[]{id});
 
@@ -162,7 +164,7 @@ public class TypeDAO extends DBContext {
 
     public int countItem() {
         try {
-            String query = "select count(type_id) as numrow from [dbo].[type]";
+            String query = "select count(ingredient_id) as numrow from [dbo].[ingredient]";
             ResultSet rs = this.executeSelectionQuery(query, null);
             if (rs.next()) {
                 return rs.getInt(1);

@@ -9,7 +9,7 @@ import static constant.CommonFunction.getTotalPages;
 import static constant.CommonFunction.validateInteger;
 import static constant.CommonFunction.validateString;
 import constant.Constants;
-import dao.TypeDAO;
+import dao.IngredientDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -22,9 +22,10 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author TruongBinhTrong
  */
-@WebServlet(name = "TypeServlet", urlPatterns = {"/type"})
-public class TypeServlet extends HttpServlet {
-    TypeDAO typeDAO = new TypeDAO();
+@WebServlet(name = "IngredientServlet", urlPatterns = {"/ingredient"})
+public class IngredientServlet extends HttpServlet {
+    IngredientDAO ingredientDAO = new IngredientDAO();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,10 +43,10 @@ public class TypeServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet TypeServlet</title>");
+            out.println("<title>Servlet IngredientServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet TypeServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet IngredientServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -81,13 +82,13 @@ public class TypeServlet extends HttpServlet {
                 id = -1;
             }
 
-            request.setAttribute("currentType", typeDAO.getElementByID(id));
+            request.setAttribute("currentIngredient", ingredientDAO.getElementByID(id));
         } else if (view.equalsIgnoreCase("delete")) {
             namepage = "delete";
         }
 
         int page;
-        int totalPages = getTotalPages(typeDAO.countItem());
+        int totalPages = getTotalPages(ingredientDAO.countItem());
 
         try {
             page = Integer.parseInt(request.getParameter("page"));
@@ -96,9 +97,9 @@ public class TypeServlet extends HttpServlet {
         }
 
         request.setAttribute("totalPages", totalPages);
-        request.setAttribute("typesList", typeDAO.getAll());
+        request.setAttribute("ingredientsList", ingredientDAO.getAll());
 
-        request.getRequestDispatcher("/WEB-INF/type/" + namepage + ".jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/ingredient/" + namepage + ".jsp").forward(request, response);
     }
 
     /**
@@ -112,14 +113,14 @@ public class TypeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
+         String action = request.getParameter("action");
 
         boolean passValidation = true;
         if (action != null && !action.isEmpty()) {
 
             if (action.equalsIgnoreCase("add")) {
-                String name = request.getParameter("typeName");
-                String description = request.getParameter("description");
+                String name = request.getParameter("name");
+                String typeName = request.getParameter("type");
 
 //validate
                 if (!validateString(name, -1)) {
@@ -127,7 +128,7 @@ public class TypeServlet extends HttpServlet {
                 }
 //end
                 if (passValidation == true) {
-                    if (typeDAO.add(name, description) >= 1) {
+                    if (ingredientDAO.add(name, typeName) >= 1) {
                     } else {
                         passValidation = false;
                     }
@@ -136,7 +137,7 @@ public class TypeServlet extends HttpServlet {
             } else if (action.equalsIgnoreCase("edit")) {
                 int id;
                 String name = request.getParameter("name");
-                String description = request.getParameter("description");
+                String typeName = request.getParameter("type");
 
                 try {
                     id = Integer.parseInt(request.getParameter("id"));
@@ -153,7 +154,7 @@ public class TypeServlet extends HttpServlet {
                 }
 //end
                 if (passValidation == true) {
-                    int checkError = typeDAO.edit(id, name, description);
+                    int checkError = ingredientDAO.edit(id, name, typeName);
 
                     if (checkError >= 1) {
 
@@ -186,7 +187,7 @@ public class TypeServlet extends HttpServlet {
                 }
 //end
                 if (passValidation == true) {
-                    int checkError = typeDAO.delete(id);
+                    int checkError = ingredientDAO.delete(id);
 
                     if (checkError >= 1) {
 
@@ -205,7 +206,7 @@ public class TypeServlet extends HttpServlet {
             }
         }
 
-        response.sendRedirect(request.getContextPath() + "/type?" + "status=" + (passValidation ? "success" : "fail") + "&lastAction=" + addEDtoEverything(action));
+        response.sendRedirect(request.getContextPath() + "/ingredient?" + "status=" + (passValidation ? "success" : "fail") + "&lastAction=" + addEDtoEverything(action));
 
     }
 
