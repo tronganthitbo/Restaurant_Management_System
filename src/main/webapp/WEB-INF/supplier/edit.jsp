@@ -33,8 +33,8 @@
         <!-- Main Site CSS -->
         <link href="assets/css/main.css" rel="stylesheet">
 
-    <!-- Admin Listing CSS -->
-    <link href="assets/css/admin-list.css" rel="stylesheet">
+        <!-- Admin Listing CSS -->
+        <link href="assets/css/dashboard.css" rel="stylesheet">
     </head>
 
     <body class="admin-list-page">
