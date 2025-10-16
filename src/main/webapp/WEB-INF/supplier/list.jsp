@@ -114,7 +114,7 @@
                                 <table class="table align-middle admin-table">
                                     <thead>
                                         <tr>
-                                            <th scope="col">ID</th>
+                                            <th scope="col">No.</th>
                                             <th scope="col">Name</th>
                                             <th scope="col">Phone Number</th>
                                             <th scope="col">Email</th>
@@ -127,13 +127,13 @@
                                         <c:choose>
                                             <c:when test="${suppliersList == null || empty suppliersList}">
                                                 <tr>
-                                                    <td colspan="8" style="color:red;">No data to display</td>
+                                                    <td colspan="9" style="color:red;">No data to display</td>
                                                 </tr>   
                                             </c:when>
                                             <c:otherwise>
                                                 <c:forEach var="supplier" items="${suppliersList}" varStatus="loop">
                                                     <tr>
-                                                        <td><c:out value="${supplier.supplierId}"/></td>
+                                                        <td><c:out value="${loop.index + 1}"/></td>
                                                         <td><c:out value="${supplier.supplierName}"/></td>
                                                         <td><c:out value="${supplier.phoneNumber}"/></td>
                                                         <td><c:out value="${supplier.email}"/></td>
@@ -142,17 +142,18 @@
 
                                                         <td class="text-end">
                                                             <div class="action-button-group d-flex justify-content-end gap-2">
+                                                                <c:url var="edit" value="supplier">
+                                                                    <c:param name="view" value="edit"/>
+                                                                    <c:param name="id" value="${supplier.supplierId}"/>
+                                                                </c:url>
                                                                 <a class="btn btn-outline-secondary btn-icon btn-edit"
                                                                    title="Edit"
                                                                    aria-label="Edit"
-                                                                   href="<c:url value='/supplier'>
-                                                                       <c:param name='view' value='edit'/>
-                                                                       <c:param name='id' value='${supplier.supplierId}'/>
-                                                                   </c:url>">
+                                                                   href="${edit}">
                                                                     <i class="bi bi-pencil"></i>
                                                                 </a>
 
-                                                                <button type="button" class="btn btn-outline-secondary btn-icon btn-delete" title="Delete" aria-label="Delete" onclick="showDeletePopup(${supplier.supplierId})">
+                                                                <button type="button" class="btn btn-outline-secondary btn-icon btn-delete" title="Delete" aria-label="Delete" onclick="showDeletePopup('${supplier.supplierId}')">
                                                                     <i class="bi bi-x-circle"></i>
                                                                 </button>
                                                             </div>

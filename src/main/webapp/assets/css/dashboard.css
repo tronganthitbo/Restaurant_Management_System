@@ -10,8 +10,32 @@
 .admin-list-page {
   background: linear-gradient(180deg, #f7f7f8 0%, #ffffff 100%);
   color: #37373f;
-  font-family: "Roboto", Arial, sans-serif;
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
   min-height: 100vh;
+}
+
+.admin-list-page h1,
+.admin-list-page h2,
+.admin-list-page h3,
+.admin-list-page h4,
+.admin-list-page h5,
+.admin-list-page h6,
+.admin-list-page p,
+.admin-list-page label,
+.admin-list-page span,
+.admin-list-page small,
+.admin-list-page table,
+.admin-list-page th,
+.admin-list-page td,
+.admin-list-page input,
+.admin-list-page select,
+.admin-list-page textarea,
+.admin-list-page button,
+.admin-list-page .btn,
+.admin-list-page .modal-title,
+.admin-list-page .modal-body,
+.admin-list-page .modal-footer {
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
 }
 
 .admin-header {
@@ -24,35 +48,14 @@
   border-bottom: 1px solid rgba(55, 55, 63, 0.08);
 }
 
-.admin-header .brand-logo {
-  line-height: 1;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.admin-header .brand-logo .sitename {
-  font-family: "Amatic SC", cursive;
-  font-size: 2.4rem;
-  color: var(--admin-dark);
-  letter-spacing: 0.02em;
-}
-
-.admin-header .brand-logo .logo-dot {
-  color: var(--admin-accent);
-  font-size: 2.6rem;
-  line-height: 1;
-}
-
-.brand-info {
+.admin-header .brand-info {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
 }
 
 .admin-header .brand-name {
-  font-family: "Inter", sans-serif;
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
   font-size: 1rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -65,22 +68,6 @@
   color: var(--admin-muted);
 }
 
-.view-toggle .btn {
-  color: var(--admin-muted);
-  border-color: rgba(55, 55, 63, 0.2);
-}
-
-.view-toggle .btn:hover,
-.view-toggle .btn:focus {
-  border-color: var(--admin-accent);
-}
-
-.view-toggle .btn-check:checked + .btn {
-  background-color: var(--admin-accent);
-  border-color: var(--admin-accent);
-  color: #ffffff;
-}
-
 .profile-chip .avatar {
   width: 40px;
   height: 40px;
@@ -89,6 +76,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
   font-weight: 600;
 }
 
@@ -114,7 +102,6 @@
 
 .section-title {
   font-size: 1.5rem;
-  font-family: "Inter", sans-serif;
   font-weight: 600;
   color: var(--admin-dark);
   white-space: nowrap;
@@ -165,13 +152,6 @@
   box-shadow: 0 8px 18px rgba(31, 31, 36, 0.12);
 }
 
-.btn-icon.btn-view:hover,
-.btn-icon.btn-view:focus {
-  background-color: #1d7d47;
-  border-color: #1d7d47;
-  color: #ffffff;
-}
-
 .btn-icon.btn-edit:hover,
 .btn-icon.btn-edit:focus {
   background-color: #c99d00;
@@ -209,6 +189,7 @@
 .admin-table thead th {
   padding-block: 0.85rem;
   border: none;
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
 }
 
 .admin-table tbody tr {
@@ -221,33 +202,24 @@
 
 .admin-table tbody td {
   border-top-color: rgba(55, 55, 63, 0.08);
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
 }
 
-.status-pill {
+.pagination .page-link {
   border-radius: 999px;
-  padding: 0.4rem 1rem;
-  font-weight: 600;
-  font-size: 0.8rem;
+  color: var(--admin-accent);
+  border-color: var(--admin-accent);
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
 }
 
-.status-preparing {
-  background: rgba(255, 193, 7, 0.18);
-  color: #946200;
+.pagination .page-item.active .page-link {
+  background-color: var(--admin-accent);
+  border-color: var(--admin-accent);
+  color: #ffffff;
 }
 
-.status-completed {
-  background: rgba(46, 204, 113, 0.18);
-  color: #1d7d47;
-}
-
-.status-pending {
-  background: rgba(0, 123, 255, 0.18);
-  color: #0b4f9c;
-}
-
-.status-cancelled {
-  background: rgba(206, 18, 18, 0.2);
-  color: #7f1515;
+.pagination .page-link:hover {
+  background-color: var(--admin-accent-hover);
 }
 
 .left-menu {
@@ -268,7 +240,7 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--admin-muted);
-  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
 }
 
 .menu-links li + li {
@@ -284,7 +256,7 @@
   font-weight: 500;
   padding: 0.5rem 0;
   transition: color 0.2s ease, transform 0.2s ease;
-  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
 }
 
 .menu-links a:hover {
@@ -298,6 +270,17 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
+}
+
+.admin-layout h1,
+.admin-layout label,
+.admin-layout table,
+.admin-layout input,
+.admin-layout select,
+.admin-layout button,
+.admin-layout a {
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
 }
 
 @media (max-width: 992px) {
@@ -335,18 +318,10 @@
 }
 
 @media (max-width: 576px) {
-  .admin-header .brand {
+  .admin-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
-  }
-
-  .admin-header .brand-logo .sitename {
-    font-size: 2.1rem;
-  }
-
-  .admin-header .brand-logo .logo-dot {
-    font-size: 2.3rem;
   }
 
   .section-title {
