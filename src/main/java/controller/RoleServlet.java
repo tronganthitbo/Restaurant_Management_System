@@ -18,6 +18,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -69,6 +70,11 @@ public class RoleServlet extends HttpServlet {
         String namepage = "";
         String view = request.getParameter("view");
 
+        String keyword = request.getParameter("keyword");
+        if (keyword == null) {
+            keyword = "";
+        }
+
         if (!validateString(view, -1) || view.equalsIgnoreCase("list")) {
             namepage = "list";
         } else if (view.equalsIgnoreCase("add")) {
@@ -99,9 +105,10 @@ public class RoleServlet extends HttpServlet {
         }
 
         request.setAttribute("totalPages", totalPages);
-        request.setAttribute("rolesList", roleDAO.getAll(page));
+        request.setAttribute("rolesList", roleDAO.getAll(page, keyword));
 
         request.getRequestDispatcher("/WEB-INF/role/" + namepage + ".jsp").forward(request, response);
+        removePopup(request);
     }
 
     /**
@@ -117,7 +124,10 @@ public class RoleServlet extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
 
-        boolean passValidation = true;
+        boolean popupStatus = true;
+        String popupMessage = "";
+
+//        boolean passValidation = true;
         if (action != null && !action.isEmpty()) {
 
             if (action.equalsIgnoreCase("add")) {
@@ -126,13 +136,18 @@ public class RoleServlet extends HttpServlet {
 
 //validate
                 if (!validateString(name, -1)) {
-                    passValidation = false;
+                    popupStatus = false;
+                    popupMessage = "The add action is NOT successfull. The input has some error.";
+                } else {
+                    popupMessage = "The object with name=" + name + " added successfull.";
                 }
 //end
-                if (passValidation == true) {
-                    if (roleDAO.add(name, description) >= 1) {
+                if (popupStatus == true) {
+                    int checkError = roleDAO.add(name, description);
+                    if (checkError >= 1) {
                     } else {
-                        passValidation = false;
+                        popupStatus = false;
+                        popupMessage = "The add action is NOT successfull. The object has " + getSqlErrorCode(checkError) + " error.";
                     }
                 }
 
@@ -145,70 +160,58 @@ public class RoleServlet extends HttpServlet {
                     id = Integer.parseInt(request.getParameter("id"));
                 } catch (NumberFormatException e) {
                     id = -1;
-
-                    passValidation = false;
                 }
 
 //validate
                 if (!validateString(name, -1)
                         || !validateInteger(id, false, false, true)) {
-                    passValidation = false;
+                    popupStatus = false;
+                    popupMessage = "The edit action is NOT successfull. The input has some error.";
+                } else {
+                    popupMessage = "The object with id=" + id + " edited successfull.";
                 }
 //end
-                if (passValidation == true) {
+                if (popupStatus == true) {
                     int checkError = roleDAO.edit(id, name, description);
 
                     if (checkError >= 1) {
-
                     } else {
-                        if (checkError - Constants.DUPLICATE_KEY == 0) {                //check trung code/key
-                            System.err.println("DUPLICATE_KEY");
-                        } else if (checkError - Constants.FOREIGN_KEY_VIOLATION == 0) {
-                            System.err.println("FOREIGN_KEY_VIOLATION");
-                        } else if (checkError - Constants.NULL_INSERT_VIOLATION == 0) {
-                            System.err.println("NULL_INSERT_VIOLATION");
-                        }
-
-                        passValidation = false;
+                        popupStatus = false;
+                        popupMessage = "The edit action is NOT successfull. The object has " + getSqlErrorCode(checkError) + " error.";
                     }
                 }
             } else if (action.equalsIgnoreCase("delete")) {
+
                 int id;
 
                 try {
                     id = Integer.parseInt(request.getParameter("id"));
                 } catch (NumberFormatException e) {
                     id = -1;
-
-                    passValidation = false;
                 }
 
 //validate
                 if (!validateInteger(id, false, false, true)) {
-                    passValidation = false;
+                    popupStatus = false;
+                    popupMessage = "The delete action is NOT successfull.";
+                } else {
+                    popupMessage = "The object with id=" + id + " deleted successfull.";
                 }
 //end
-                if (passValidation == true) {
+                if (popupStatus == true) {
                     int checkError = roleDAO.delete(id);
 
                     if (checkError >= 1) {
 
                     } else {
-                        if (checkError - Constants.DUPLICATE_KEY == 0) {                //check trung code/key
-                            System.err.println("DUPLICATE_KEY");
-                        } else if (checkError - Constants.FOREIGN_KEY_VIOLATION == 0) {
-                            System.err.println("FOREIGN_KEY_VIOLATION");
-                        } else if (checkError - Constants.NULL_INSERT_VIOLATION == 0) {
-                            System.err.println("NULL_INSERT_VIOLATION");
-                        }
-
-                        passValidation = false;
+                        popupStatus = false;
+                        popupMessage = "The delete action is NOT successfull. The object has " + getSqlErrorCode(checkError) + " error.";
                     }
                 }
             }
         }
-
-        response.sendRedirect(request.getContextPath() + "/role?" + "status=" + (passValidation ? "success" : "fail") + "&lastAction=" + addEDtoEverything(action));
+        setPopup(request, popupStatus, popupMessage);
+        response.sendRedirect(request.getContextPath() + "/role");
 
     }
 
@@ -222,4 +225,27 @@ public class RoleServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    public void setPopup(HttpServletRequest request, boolean status, String message) {
+        HttpSession session = request.getSession(false);
+        session.setAttribute("popupStatus", status);
+        session.setAttribute("popupMessage", message);
+    }
+
+    public void removePopup(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        session.removeAttribute("popupStatus");
+        session.removeAttribute("popupMessage");
+    }
+
+    public String getSqlErrorCode(int temp_code) {
+        if (temp_code + Constants.DUPLICATE_KEY == 0) {                //check trung code/key
+            return "DUPLICATE_KEY";
+        } else if (temp_code + Constants.FOREIGN_KEY_VIOLATION == 0) {
+            return "FOREIGN_KEY_VIOLATION";
+        } else if (temp_code + Constants.NULL_INSERT_VIOLATION == 0) {
+            return "NULL_INSERT_VIOLATION";
+        }
+
+        return "Unknow Error Code:" + temp_code;
+    }
 }

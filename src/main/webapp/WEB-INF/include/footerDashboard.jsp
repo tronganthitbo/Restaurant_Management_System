@@ -1,9 +1,3 @@
-<%-- 
-    Document   : footer.jsp
-    Created on : 19 Jun 2025, 8:46:19 PM
-    Author     : Dai Minh Nhu - CE190213
---%>
-
 </div>
 </div>
 </main>
@@ -18,21 +12,21 @@
 <script src="<%=request.getContextPath()%>/assets/js/main.js"></script>
 </body>
 
-<c:if  test="${not empty param.status}">
+<c:if  test="${not empty sessionScope.popupStatus}">
     <div class="modal" id="exampleModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Action ${param.status == "success"?"Successful":"Fail"}</h5>
+                    <h5 class="modal-title">Action ${sessionScope.popupStatus eq true?"Successful":"Fail"}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <c:choose>
-                        <c:when test="${param.status eq 'success'}">
-                            <p style="color: green">The role <c:out value="${param.lastAction}"/> successfully.</p>
+                        <c:when test="${sessionScope.popupStatus eq true}">
+                            <p style="color: green"><c:out value="${sessionScope.popupMessage}"/></p>
                         </c:when>
                         <c:otherwise>
-                            <p style="color: red">Failed to <c:out value="${param.lastAction}"/> the supplier. Please check the information.</p>
+                            <p style="color: red"><c:out value="${sessionScope.popupMessage}"/></p>
                         </c:otherwise>
                     </c:choose>
                 </div>
