@@ -325,3 +325,55 @@
 19-Oct-2025 08:43:45.113 INFO [http-nio-8080-exec-72] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
 19-Oct-2025 08:43:45.113 INFO [http-nio-8080-exec-72] org.apache.catalina.startup.HostConfig.deployDescriptor Deployment of deployment descriptor [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\conf\Catalina\localhost\SWP391_RMS.xml] has finished in [395] ms
 19-Oct-2025 08:43:45.113 INFO [http-nio-8080-exec-73] org.apache.catalina.util.LifecycleBase.start The start() method was called on component [StandardEngine[Catalina].StandardHost[localhost].StandardContext[/SWP391_RMS]] after start() had already been called. The second call will be ignored.
+19-Oct-2025 08:45:42.486 WARNING [http-nio-8080-exec-68] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc The web application [SWP391_RMS] registered the JDBC driver [com.microsoft.sqlserver.jdbc.SQLServerDriver] but failed to unregister it when the web application was stopped. To prevent a memory leak, the JDBC Driver has been forcibly unregistered.
+19-Oct-2025 08:45:42.989 INFO [http-nio-8080-exec-68] org.apache.catalina.startup.HostConfig.undeploy Undeploying context [/SWP391_RMS]
+19-Oct-2025 08:45:43.004 INFO [http-nio-8080-exec-69] org.apache.catalina.startup.HostConfig.deployDescriptor Deploying deployment descriptor [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\conf\Catalina\localhost\SWP391_RMS.xml]
+19-Oct-2025 08:45:43.005 WARNING [http-nio-8080-exec-69] org.apache.catalina.startup.HostConfig.deployDescriptor The path attribute with value [/SWP391_RMS] in deployment descriptor [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\conf\Catalina\localhost\SWP391_RMS.xml] has been ignored
+19-Oct-2025 08:45:43.432 INFO [http-nio-8080-exec-69] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+19-Oct-2025 08:45:43.438 INFO [http-nio-8080-exec-69] org.apache.catalina.startup.HostConfig.deployDescriptor Deployment of deployment descriptor [D:\CacLopFPT\Ki5_SE1902\SWP\Restaurant_Management_System\tomcat\apache-tomcat-10.1.40\conf\Catalina\localhost\SWP391_RMS.xml] has finished in [434] ms
+19-Oct-2025 08:45:43.441 INFO [http-nio-8080-exec-67] org.apache.catalina.util.LifecycleBase.start The start() method was called on component [StandardEngine[Catalina].StandardHost[localhost].StandardContext[/SWP391_RMS]] after start() had already been called. The second call will be ignored.
+19-Oct-2025 08:46:35.284 INFO [http-nio-8080-exec-76] org.apache.catalina.core.StandardContext.reload Reloading Context with name [/SWP391_RMS] has started
+19-Oct-2025 08:46:35.706 INFO [http-nio-8080-exec-76] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+19-Oct-2025 08:46:35.712 INFO [http-nio-8080-exec-76] org.apache.catalina.core.StandardContext.reload Reloading Context with name [/SWP391_RMS] is completed
+19-Oct-2025 08:46:41.129 SEVERE [http-nio-8080-exec-78] dao.EmployeeDAO.getAll null
+	com.microsoft.sqlserver.jdbc.SQLServerException: Incorrect syntax near the keyword 'ORDER'.
+		at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:270)
+		at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServerStatement.java:1778)
+		at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement.doExecutePreparedStatement(SQLServerPreparedStatement.java:703)
+		at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement$PrepStmtExecCmd.doExecute(SQLServerPreparedStatement.java:622)
+		at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7775)
+		at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:4408)
+		at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLServerStatement.java:293)
+		at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLServerStatement.java:263)
+		at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement.executeQuery(SQLServerPreparedStatement.java:537)
+		at db.DBContext.executeSelectionQuery(DBContext.java:45)
+		at dao.EmployeeDAO.getAll(EmployeeDAO.java:112)
+		at controller.EmployeeServlet.doGet(EmployeeServlet.java:105)
+		at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+		at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+		at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+		at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+		at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+		at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+		at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+		at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+		at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+		at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+		at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+		at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+		at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:666)
+		at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+		at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+		at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+		at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+		at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+		at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1740)
+		at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+		at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+		at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+		at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+		at java.base/java.lang.Thread.run(Thread.java:834)
+19-Oct-2025 08:47:24.475 INFO [http-nio-8080-exec-73] org.apache.catalina.core.StandardContext.reload Reloading Context with name [/SWP391_RMS] has started
+19-Oct-2025 08:47:24.479 WARNING [http-nio-8080-exec-73] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc The web application [SWP391_RMS] registered the JDBC driver [com.microsoft.sqlserver.jdbc.SQLServerDriver] but failed to unregister it when the web application was stopped. To prevent a memory leak, the JDBC Driver has been forcibly unregistered.
+19-Oct-2025 08:47:24.885 INFO [http-nio-8080-exec-73] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+19-Oct-2025 08:47:24.894 INFO [http-nio-8080-exec-73] org.apache.catalina.core.StandardContext.reload Reloading Context with name [/SWP391_RMS] is completed

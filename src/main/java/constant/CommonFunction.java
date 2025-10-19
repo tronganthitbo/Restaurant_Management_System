@@ -95,16 +95,16 @@ public class CommonFunction {
     public static int checkErrorSQL(SQLException ex) {
         if (ex.getErrorCode() == DUPLICATE_KEY) {  //duplicate key
             System.err.println("DUPLICATE KEY");
-            return -2627;
+            return -DUPLICATE_KEY;
         } else if (ex.getErrorCode() == FOREIGN_KEY_VIOLATION) {  //foreign key violation
             System.err.println("Foreign key violation");
-            return -547;
+            return -FOREIGN_KEY_VIOLATION;
         } else if (ex.getErrorCode() == NULL_INSERT_VIOLATION) {  //null insert violation
             System.err.println("Null insert violation");
-            return -515;
+            return -NULL_INSERT_VIOLATION;
         }  else if (ex.getErrorCode() == UNIQUE_INDEX) {  //null insert violation
             System.err.println("DUPLICATE UNIQUE");
-            return -515;
+            return -UNIQUE_INDEX;
         }
         
         return 0;
