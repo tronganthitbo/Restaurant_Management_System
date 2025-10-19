@@ -4,12 +4,7 @@
  */
 package controller;
 
-import static constant.CommonFunction.addEDtoEverything;
-import static constant.CommonFunction.getTotalPages;
-import static constant.CommonFunction.stringConvertDateTime;
-import static constant.CommonFunction.validateInteger;
-import static constant.CommonFunction.validateString;
-import constant.Constants;
+import static constant.CommonFunction.*;
 import dao.RoleDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,7 +13,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -224,28 +218,4 @@ public class RoleServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    public void setPopup(HttpServletRequest request, boolean status, String message) {
-        HttpSession session = request.getSession(false);
-        session.setAttribute("popupStatus", status);
-        session.setAttribute("popupMessage", message);
-    }
-
-    public void removePopup(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        session.removeAttribute("popupStatus");
-        session.removeAttribute("popupMessage");
-    }
-
-    public String getSqlErrorCode(int temp_code) {
-        if (temp_code + Constants.DUPLICATE_KEY == 0) {                //check trung code/key
-            return "DUPLICATE_KEY";
-        } else if (temp_code + Constants.FOREIGN_KEY_VIOLATION == 0) {
-            return "FOREIGN_KEY_VIOLATION";
-        } else if (temp_code + Constants.NULL_INSERT_VIOLATION == 0) {
-            return "NULL_INSERT_VIOLATION";
-        }
-
-        return "Unknow Error Code:" + temp_code;
-    }
 }

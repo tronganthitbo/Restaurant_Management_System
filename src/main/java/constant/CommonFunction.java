@@ -5,6 +5,8 @@
 package constant;
 
 import static constant.Constants.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 
 /**
@@ -93,15 +95,42 @@ public class CommonFunction {
     public static int checkErrorSQL(SQLException ex) {
         if (ex.getErrorCode() == DUPLICATE_KEY) {  //duplicate key
             System.err.println("DUPLICATE KEY");
-            return -2627;
+            return -DUPLICATE_KEY;
         } else if (ex.getErrorCode() == FOREIGN_KEY_VIOLATION) {  //foreign key violation
             System.err.println("Foreign key violation");
-            return -547;
+            return -FOREIGN_KEY_VIOLATION;
         } else if (ex.getErrorCode() == NULL_INSERT_VIOLATION) {  //null insert violation
             System.err.println("Null insert violation");
-            return -515;
+            return -NULL_INSERT_VIOLATION;
+        }  else if (ex.getErrorCode() == UNIQUE_INDEX) {  //null insert violation
+            System.err.println("DUPLICATE UNIQUE");
+            return -UNIQUE_INDEX;
         }
         
         return 0;
+    }
+    
+    public static void setPopup(HttpServletRequest request, boolean status, String message) {
+        HttpSession session = request.getSession(false);
+        session.setAttribute("popupStatus", status);
+        session.setAttribute("popupMessage", message);
+    }
+
+    public static void removePopup(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        session.removeAttribute("popupStatus");
+        session.removeAttribute("popupMessage");
+    }
+
+    public static String getSqlErrorCode(int temp_code) {
+        if (temp_code + Constants.DUPLICATE_KEY == 0) {                //check trung code/key
+            return "DUPLICATE_KEY";
+        } else if (temp_code + Constants.FOREIGN_KEY_VIOLATION == 0) {
+            return "FOREIGN_KEY_VIOLATION";
+        } else if (temp_code + Constants.NULL_INSERT_VIOLATION == 0) {
+            return "NULL_INSERT_VIOLATION";
+        }
+
+        return "Unknow Error Code:" + temp_code;
     }
 }

@@ -4,10 +4,7 @@
  */
 package controller;
 
-import static constant.CommonFunction.addEDtoEverything;
-import static constant.CommonFunction.getTotalPages;
-import static constant.CommonFunction.validateInteger;
-import static constant.CommonFunction.validateString;
+import static constant.CommonFunction.*;
 import dao.EmployeeDAO;
 import dao.RoleDAO;
 import java.io.IOException;
@@ -17,7 +14,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.Date;
 
 /**
  *
@@ -26,7 +22,7 @@ import java.sql.Date;
 @WebServlet(name = "EmployeeServlet", urlPatterns = {"/employee"})
 public class EmployeeServlet extends HttpServlet {
 
-    EmployeeDAO empDAO = new EmployeeDAO();
+    EmployeeDAO employeeDAO = new EmployeeDAO();
     RoleDAO roleDAO = new RoleDAO();
 
     /**
@@ -41,7 +37,7 @@ public class EmployeeServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -70,38 +66,46 @@ public class EmployeeServlet extends HttpServlet {
         String namepage = "";
         String view = request.getParameter("view");
 
-        if (!validateString(view, -1)) {
+        String keyword = request.getParameter("keyword");
+        if (keyword == null) {
+            keyword = "";
+        }
+
+        if (!validateString(view, -1) || view.equalsIgnoreCase("list")) {
             namepage = "list";
-        } else if (view.equalsIgnoreCase("create")) {
-            namepage = "create";
-            RoleDAO roleDAO = new RoleDAO();
-            request.setAttribute("rolesList", roleDAO.getAvailableRoles());
+        } else if (view.equalsIgnoreCase("add")) {
+            namepage = "add";
         } else if (view.equalsIgnoreCase("edit")) {
             namepage = "edit";
+
             int id;
+
             try {
                 id = Integer.parseInt(request.getParameter("id"));
             } catch (NumberFormatException e) {
                 id = -1;
             }
-            request.setAttribute("currentEmployee", empDAO.getElementByID(id));
-            RoleDAO roleDAO = new RoleDAO();
-            request.setAttribute("rolesList", roleDAO.getAvailableRoles());
+
+            request.setAttribute("currentEmployee", employeeDAO.getElementByID(id));
         } else if (view.equalsIgnoreCase("delete")) {
             namepage = "delete";
         }
 
         int page;
-        int totalPages = getTotalPages(empDAO.countItem());
+        int totalPages = getTotalPages(employeeDAO.countItem());
+
         try {
             page = Integer.parseInt(request.getParameter("page"));
         } catch (NumberFormatException e) {
             page = 1;
         }
 
+        request.setAttribute("rolesList", roleDAO.getAll());
         request.setAttribute("totalPages", totalPages);
-        request.setAttribute("employeeList", empDAO.getAll(page));
+        request.setAttribute("employeeList", employeeDAO.getAll(page, keyword));
+
         request.getRequestDispatcher("/WEB-INF/employee/" + namepage + ".jsp").forward(request, response);
+        removePopup(request);
     }
 
     /**
@@ -116,156 +120,118 @@ public class EmployeeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        boolean passValidation = true;
-        String errorMsg = "";
+
+        boolean popupStatus = true;
+        String popupMessage = "";
 
         if (action != null && !action.isEmpty()) {
-            if (action.equalsIgnoreCase("create")) {
 
-                // Lấy dữ liệu từ form
-                String emp_account = request.getParameter("emp_account");
+            if (action.equalsIgnoreCase("add")) {
+                String empAccount = request.getParameter("empAccount");
                 String password = request.getParameter("password");
-                String emp_name = request.getParameter("emp_name");
-                String gender = request.getParameter("gender");
-                String dob_raw = request.getParameter("dob");
-                String phone_number = request.getParameter("phone_number");
-                String email = request.getParameter("email");
-                String address = request.getParameter("address");
-                String role_raw = request.getParameter("role_id");
-
-                int role_id = -1;
+                String empName = request.getParameter("empName");
+                int roleId;
 
                 try {
-                    role_id = Integer.parseInt(role_raw);
-                } catch (Exception e) {
-                    passValidation = false;
-                    errorMsg = "Role không hợp lệ!";
+                    roleId = Integer.parseInt(request.getParameter("roleId"));
+                    if (roleDAO.isRoleDeleted(roleId)) {
+                        throw new Exception();
+                    }
+                } catch (Exception ex) {
+                    roleId = -1;
                 }
 
-                // Kiểm tra role có bị xóa không
-                if (roleDAO.isRoleDeleted(role_id)) {
-                    passValidation = false;
-                    errorMsg = "Role này đã bị xóa, vui lòng chọn role khác!";
-                }
-                // Validate input
-                if (!validateString(emp_account, -1)
+//validate
+                if (!validateString(empAccount, -1)
                         || !validateString(password, -1)
-                        || !validateString(emp_name, -1)
-                        || !validateString(gender, -1)
-                        || !validateString(dob_raw, -1)
-                        || !validateString(phone_number, -1)
-                        || !validateString(email, -1)
-                        || !validateString(address, -1)
-                        || !validateString(role_raw, -1)) {
-                    passValidation = false;
+                        || !validateString(empName, -1)
+                        || !validateInteger(roleId, false, false, true)) {
+                    popupStatus = false;
+                    popupMessage = "The add action is NOT successfull. The input has some error.";
+                } else {
+                    popupMessage = "The object with name=" + empName + " added successfull"
+                            + "(Account: " + empAccount + "; "
+                            + "Password: " + password + ")";
                 }
+//end
+                
+                password = constant.HashUtil.toMD5(password);
 
-                if (passValidation) {
-                    try {
-                        Date dob = Date.valueOf(dob_raw);
-                        int result = empDAO.create(emp_account, password, emp_name, gender, dob,
-                                phone_number, email, address, role_id);
-                        if (result < 1) {
-                            passValidation = false;
-                        }
-                    } catch (Exception e) {
-                        passValidation = false;
+                if (popupStatus == true) {
+                    int checkError = employeeDAO.add(empAccount, password, empName, roleId);
+                    if (checkError >= 1) {
+                    } else {
+                        popupStatus = false;
+                        popupMessage = "The add action is NOT successfull. The object has " + getSqlErrorCode(checkError) + " error.";
                     }
                 }
 
             } else if (action.equalsIgnoreCase("edit")) {
-
-                int emp_id;
-                String emp_account = request.getParameter("emp_account");
-                String password = request.getParameter("password");
-                String emp_name = request.getParameter("emp_name");
-                String gender = request.getParameter("gender");
-                String dob_raw = request.getParameter("dob");
-                String phone_number = request.getParameter("phone_number");
-                String email = request.getParameter("email");
-                String address = request.getParameter("address");
-                String role_raw = request.getParameter("role_id");
-                String status = request.getParameter("status");
+                int empId;
+                int roleId;
 
                 try {
-                    emp_id = Integer.parseInt(request.getParameter("emp_id"));
-                } catch (NumberFormatException e) {
-                    emp_id = -1;
-                    passValidation = false;
-                }
-                int role_id = -1;
-                try {
-                    role_id = Integer.parseInt(role_raw);
+                    empId = Integer.parseInt(request.getParameter("id"));
+                    roleId = Integer.parseInt(request.getParameter("roleId"));
+                    
+                    if (roleDAO.isRoleDeleted(roleId)) {
+                        throw new Exception();
+                    }
                 } catch (Exception e) {
-                    passValidation = false;
-                    errorMsg = "Role không hợp lệ!";
+                    empId = -1;
+                    roleId = -1;
                 }
 
-                // Kiểm tra role có bị xóa không
-                if (roleDAO.isRoleDeleted(role_id)) {
-                    passValidation = false;
-                    errorMsg = "Role này đã bị xóa, vui lòng chọn role khác!";
+//validate
+                if (!validateInteger(empId, false, false, true)||
+                        !validateInteger(roleId, false, false, true)) {
+                    popupStatus = false;
+                    popupMessage = "The edit action is NOT successfull. The input has some error.";
+                } else {
+                    popupMessage = "The object with id=" + empId + " edited role successfull.";
                 }
-                if (!validateInteger(emp_id, false, false, true)
-                        || !validateString(emp_account, -1)
-                        || !validateString(password, -1)
-                        || !validateString(emp_name, -1)
-                        || !validateString(gender, -1)
-                        || !validateString(dob_raw, -1)
-                        || !validateString(phone_number, -1)
-                        || !validateString(email, -1)
-                        || !validateString(address, -1)
-                        || !validateString(role_raw, -1)
-                        || !validateString(status, -1)) {
-                    passValidation = false;
-                }
+//end
 
-                if (passValidation) {
-                    try {
-                        Date dob = Date.valueOf(dob_raw);
-                        int checkError = empDAO.edit(emp_id, emp_account, password, emp_name, gender, dob,
-                                phone_number, email, address, role_id, status);
-                        if (checkError < 1) {
-                            passValidation = false;
-                        }
-                    } catch (Exception e) {
-                        passValidation = false;
+                if (popupStatus == true) {
+                    int checkError = employeeDAO.edit(empId, roleId);
+
+                    if (checkError >= 1) {
+                    } else {
+                        popupStatus = false;
+                        popupMessage = "The edit action is NOT successfull. The object has " + getSqlErrorCode(checkError) + " error.";
                     }
                 }
-
             } else if (action.equalsIgnoreCase("delete")) {
                 int id;
+
                 try {
                     id = Integer.parseInt(request.getParameter("id"));
                 } catch (NumberFormatException e) {
                     id = -1;
-                    passValidation = false;
                 }
 
+//validate
                 if (!validateInteger(id, false, false, true)) {
-                    passValidation = false;
+                    popupStatus = false;
+                    popupMessage = "The delete action is NOT successfull.";
+                } else {
+                    popupMessage = "The object with id=" + id + " deleted successfull.";
                 }
+//end
+                if (popupStatus == true) {
+                    int checkError = employeeDAO.delete(id);
 
-                if (passValidation) {
-                    int checkError = empDAO.delete(id);
-                    if (checkError < 1) {
-                        passValidation = false;
+                    if (checkError >= 1) {
+
+                    } else {
+                        popupStatus = false;
+                        popupMessage = "The delete action is NOT successfull. The object has " + getSqlErrorCode(checkError) + " error.";
                     }
                 }
             }
+            setPopup(request, popupStatus, popupMessage);
+            response.sendRedirect(request.getContextPath() + "/employee");
         }
-        if (!passValidation) {
-            request.setAttribute("errorMsg", errorMsg);
-            if ("create".equalsIgnoreCase(action)) {
-                request.getRequestDispatcher("/WEB-INF/employee/create.jsp").forward(request, response);
-            } else if ("edit".equalsIgnoreCase(action)) {
-                request.getRequestDispatcher("/WEB-INF/employee/edit.jsp").forward(request, response);
-            }
-            return;
-        }
-        response.sendRedirect(request.getContextPath()
-                + "/employee?status=" + (passValidation ? "success" : "fail")
-                + "&lastAction=" + addEDtoEverything(action));
     }
 
     /**
