@@ -5,6 +5,8 @@
 package constant;
 
 import static constant.Constants.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 
 /**
@@ -100,8 +102,35 @@ public class CommonFunction {
         } else if (ex.getErrorCode() == NULL_INSERT_VIOLATION) {  //null insert violation
             System.err.println("Null insert violation");
             return -515;
+        }  else if (ex.getErrorCode() == UNIQUE_INDEX) {  //null insert violation
+            System.err.println("DUPLICATE UNIQUE");
+            return -515;
         }
         
         return 0;
+    }
+    
+    public static void setPopup(HttpServletRequest request, boolean status, String message) {
+        HttpSession session = request.getSession(false);
+        session.setAttribute("popupStatus", status);
+        session.setAttribute("popupMessage", message);
+    }
+
+    public static void removePopup(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        session.removeAttribute("popupStatus");
+        session.removeAttribute("popupMessage");
+    }
+
+    public static String getSqlErrorCode(int temp_code) {
+        if (temp_code + Constants.DUPLICATE_KEY == 0) {                //check trung code/key
+            return "DUPLICATE_KEY";
+        } else if (temp_code + Constants.FOREIGN_KEY_VIOLATION == 0) {
+            return "FOREIGN_KEY_VIOLATION";
+        } else if (temp_code + Constants.NULL_INSERT_VIOLATION == 0) {
+            return "NULL_INSERT_VIOLATION";
+        }
+
+        return "Unknow Error Code:" + temp_code;
     }
 }

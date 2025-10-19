@@ -59,10 +59,6 @@
 
                                     <td class="text-end">
                                         <div class="action-button-group d-flex justify-content-end gap-2">
-                                            <c:url var="edit" value="role">
-                                                <c:param name="view" value="edit"/>
-                                                <c:param name="id" value="${role.id}"/>
-                                            </c:url>
                                             <a class="btn btn-outline-secondary btn-icon btn-edit"
                                                title="Edit" aria-label="Edit"
                                                href="<c:url value="role">

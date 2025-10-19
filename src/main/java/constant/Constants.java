@@ -21,4 +21,5 @@ public class Constants {
     public static final int DUPLICATE_KEY = 2627;
     public static final int FOREIGN_KEY_VIOLATION = 547;
     public static final int NULL_INSERT_VIOLATION = 515;
+    public static final int UNIQUE_INDEX = 2601;
 }

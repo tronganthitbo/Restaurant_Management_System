@@ -3,13 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model;
+
 import java.sql.Date;
+
 /**
  *
  * @author PHAT
  */
 public class Employee {
-     private int empId;
+
+    private int empId;
     private String empAccount;
     private String password;
     private String empName;
@@ -19,12 +22,10 @@ public class Employee {
     private String email;
     private String address;
     private int roleId;
+    private String roleName;
     private String status;
 
-    public Employee() {
-    }
-
-    public Employee(int empId, String empAccount, String password, String empName, String gender, Date dob, String phoneNumber, String email, String address, int roleId, String status) {
+    public Employee(int empId, String empAccount, String password, String empName, String gender, Date dob, String phoneNumber, String email, String address, int roleId, String roleName, String status) {
         this.empId = empId;
         this.empAccount = empAccount;
         this.password = password;
@@ -35,6 +36,7 @@ public class Employee {
         this.email = email;
         this.address = address;
         this.roleId = roleId;
+        this.roleName = roleName;
         this.status = status;
     }
 
@@ -118,6 +120,14 @@ public class Employee {
         this.roleId = roleId;
     }
 
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -125,5 +135,5 @@ public class Employee {
     public void setStatus(String status) {
         this.status = status;
     }
-    
+
 }
