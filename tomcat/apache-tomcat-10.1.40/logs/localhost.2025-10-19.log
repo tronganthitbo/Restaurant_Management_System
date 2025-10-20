@@ -1560,3 +1560,5 @@ Stacktrace:] with root cause
 		at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
 		at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
 		at java.base/java.lang.Thread.run(Thread.java:834)
+19-Oct-2025 08:56:01.129 INFO [main] org.apache.catalina.core.ApplicationContext.log SessionListener: contextDestroyed()
+19-Oct-2025 08:56:01.129 INFO [main] org.apache.catalina.core.ApplicationContext.log ContextListener: contextDestroyed()

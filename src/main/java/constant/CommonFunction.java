@@ -129,6 +129,8 @@ public class CommonFunction {
             return "FOREIGN_KEY_VIOLATION";
         } else if (temp_code + Constants.NULL_INSERT_VIOLATION == 0) {
             return "NULL_INSERT_VIOLATION";
+        }  else if (temp_code + Constants.UNIQUE_INDEX == 0) {
+            return "DUPLICATE_UNIQUE";
         }
 
         return "Unknow Error Code:" + temp_code;
