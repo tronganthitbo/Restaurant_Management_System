@@ -52,7 +52,7 @@ CREATE TABLE customer (
     customer_name NVARCHAR(100) NOT NULL,
 	gender NVARCHAR(10) NULL,
     dob DATE NULL,
-    phone_number VARCHAR(19) NOT NULL,
+    phone_number VARCHAR(19) NULL,
     email NVARCHAR(255) NULL,
     address NVARCHAR(255) NULL,
     status NVARCHAR(20) NOT NULL DEFAULT 'Active',
@@ -109,6 +109,13 @@ CREATE UNIQUE INDEX UX_employee_account_not_deleted
 ON employee(emp_account)
 WHERE status <> 'deleted';
 
+CREATE TABLE recipe (
+    recipe_id INT IDENTITY(1,1) NOT NULL,
+    recipe_name NVARCHAR(100) NOT NULL,
+    status NVARCHAR(20) NOT NULL DEFAULT 'Active',
+    CONSTRAINT PK_recipe PRIMARY KEY (recipe_id)
+);
+
 CREATE TABLE menu_item (
     menu_item_id INT IDENTITY(1,1) NOT NULL,
     category_id INT NOT NULL,
@@ -119,7 +126,7 @@ CREATE TABLE menu_item (
     description NVARCHAR(255) NULL,
     status NVARCHAR(20) NOT NULL DEFAULT 'Active',
     CONSTRAINT PK_menu_item PRIMARY KEY (menu_item_id),
-    CONSTRAINT FK_category FOREIGN KEY (category_id) REFERENCES category(category_id)
+    CONSTRAINT FK_category FOREIGN KEY (category_id) REFERENCES category(category_id),
     CONSTRAINT FK_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id)
 );
 
@@ -193,13 +200,6 @@ CREATE TABLE order_item (
     CONSTRAINT PK_order_item PRIMARY KEY (order_item_id),
     CONSTRAINT FK_order_item_order FOREIGN KEY (order_id) REFERENCES [order](order_id),
     CONSTRAINT FK_order_item_menu FOREIGN KEY (menu_item_id) REFERENCES menu_item(menu_item_id)
-);
-
-CREATE TABLE recipe (
-    recipe_id INT IDENTITY(1,1) NOT NULL,
-    recipe_name NVARCHAR(100) NOT NULL,
-    status NVARCHAR(20) NOT NULL DEFAULT 'Active',
-    CONSTRAINT PK_recipe PRIMARY KEY (recipe_id)
 );
 
 CREATE UNIQUE INDEX UX_recipe_name_not_deleted
