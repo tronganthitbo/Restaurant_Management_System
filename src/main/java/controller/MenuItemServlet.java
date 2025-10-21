@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author TruongBinhTrong
  */
-@WebServlet(name = "MenuItemServlet", urlPatterns = {"/menuitem"})
+    @WebServlet(name = "MenuItemServlet", urlPatterns = {"/menuitem"})
 public class MenuItemServlet extends HttpServlet {
 
     /**

@@ -21,3 +21,5 @@ tomcat/apache-tomcat-10.1.40/logs/
 
 # Common logs
 *.log
+
+*.xml
