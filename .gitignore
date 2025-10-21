@@ -15,3 +15,9 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+# Tomcat logs
+tomcat/apache-tomcat-10.1.40/logs/
+
+# Common logs
+*.log
