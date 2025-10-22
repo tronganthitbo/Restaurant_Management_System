@@ -232,6 +232,9 @@ public class VoucherServlet extends HttpServlet {
                 }
             }
         }
+        setPopup(request, popupStatus, popupMessage);
+        response.sendRedirect(request.getContextPath() + "/voucher");
+        
     }
 
     /**

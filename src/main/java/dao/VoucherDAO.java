@@ -80,6 +80,10 @@ public class VoucherDAO extends DBContext {
     public List<Voucher> getAll(int page, String keyword) {
         List<Voucher> list = new ArrayList<>();
         try {
+            String safeKeyword = keyword
+                    .replace("\\", "\\\\") // escape dấu gạch chéo ngược
+                    .replace("%", "\\%") // escape dấu %
+                    .replace("_", "\\_");   // escape dấu _
             String query = "SELECT v.voucher_id, v.voucher_code, v.voucher_name, v.discount_type, v.discount_value, "
                     + "v.quantity, v.start_date, v.end_date, v.status "
                     + "FROM voucher AS v "
@@ -93,7 +97,7 @@ public class VoucherDAO extends DBContext {
                     + "ORDER BY v.voucher_id "
                     + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
 
-            keyword = "%" + keyword + "%";
+            keyword = "%" + safeKeyword + "%";
             ResultSet rs = this.executeSelectionQuery(query, new Object[]{
                 keyword, keyword, keyword, keyword, keyword, keyword,
                 (page - 1) * MAX_ELEMENTS_PER_PAGE, MAX_ELEMENTS_PER_PAGE
