@@ -11,7 +11,7 @@
 <section class="col-12 col-lg-9 col-xxl-10 table-section" aria-label="Form section">
     <div class="content-card shadow-sm">
         <div class="card-header border-0 px-4 py-3 d-flex flex-column flex-md-row justify-content-between align-items-center">
-            <h1 class="section-title mb-1">Edit Table</h1>
+            <h1 class="section-title mb-1"> Edit Table</h1>
         </div>
 
         <div class="container">
