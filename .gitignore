@@ -21,3 +21,13 @@ tomcat/apache-tomcat-10.1.40/logs/
 
 # Common logs
 *.log
+
+tomcat/apache-tomcat-*/conf/Catalina/localhost/*.xml
+
+nbactions.xml
+
+tomcat/
+apache-tomcat-*/
+logs/
+work/
+temp/
