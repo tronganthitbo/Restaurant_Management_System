@@ -23,3 +23,5 @@ tomcat/apache-tomcat-10.1.40/logs/
 *.log
 
 tomcat/apache-tomcat-*/conf/Catalina/localhost/*.xml
+
+nbactions.xml
