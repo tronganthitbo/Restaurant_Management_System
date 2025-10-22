@@ -263,4 +263,24 @@ public class CustomerDAO extends DBContext {
         }
         return 0;
     }
+
+    public int updateStatus(int id) {
+        try {
+            String query = "UPDATE customer "
+                    + "SET status = CASE "
+                    + "WHEN status = 'Active' THEN 'Banned' "
+                    + "WHEN status = 'Banned' THEN 'Active' "
+                    + "ELSE status END "
+                    + "WHERE customer_id = ?";
+            return this.executeQuery(query, new Object[]{id});
+        } catch (SQLException ex) {
+            int sqlError = checkErrorSQL(ex);
+            if (sqlError != 0) {
+                return sqlError;
+            }
+            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+
 }
