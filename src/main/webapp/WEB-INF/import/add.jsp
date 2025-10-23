@@ -12,7 +12,7 @@
     <head>
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>Add Supplier</title>
+        <title>Add Import</title>
         <meta name="description" content="Form to add a new supplier in the Yummy Restaurant admin panel.">
         <meta name="keywords" content="supplier form, admin, restaurant management">
 
@@ -23,7 +23,7 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com" rel="preconnect">
         <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
         <!-- Vendor CSS Files -->
         <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -33,8 +33,8 @@
         <!-- Main Site CSS -->
         <link href="assets/css/main.css" rel="stylesheet">
 
-    <!-- Admin Listing CSS -->
-    <link href="assets/css/admin-list.css" rel="stylesheet">
+        <!-- Admin Listing CSS -->
+        <link href="assets/css/dashboard.css" rel="stylesheet">
     </head>
 
     <body class="admin-list-page">
@@ -60,51 +60,32 @@
 
         <main class="admin-layout">
             <div class="container">
-                <h1 class="mt-5">Add Supplier</h1>
-                <form method="post" action="<c:url value='supplier'/>">
+                <h1 class="mt-5">Add Import</h1>
+                <form method="post" action="<c:url value='import'/>">
                     <table class="table">
                         <tr>
                             <th>
-                                <label for="name">Name</label>
+                                <label for="name">Supplier Name</label>
                             </th>
                             <td>
-                                <input type="text" name="supplierName" id="supplierName" class="form-control" required>
+                                <select name="supplierId">    
+                                    <c:forEach var="supplier" items="${supplierList}">
+                                        <option value="${supplier.supplierId}" required class="form-control">${supplier.supplierName}</option>
+                                    </c:forEach>
+                                </select>
                             </td>
                         </tr>
-
+                        
                         <tr>
                             <th>
-                                <label for="description">Phone Number</label>
+                                <label for="name">Supplier Name</label>
                             </th>
                             <td>
-                                <input type="text" name="phoneNumber" id="phoneNumber" class="form-control">
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th>
-                                <label for="description">Email</label>
-                            </th>
-                            <td>
-                                <input type="text" name="email" id="email" class="form-control">
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th>
-                                <label for="description">Address</label>
-                            </th>
-                            <td>
-                                <input type="text" name="address" id="address" class="form-control">
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th>
-                                <label for="description">Contact Person</label>
-                            </th>
-                            <td>
-                                <input type="text" name="contactPerson" id="contactPerson" class="form-control">
+                                <select name="empId">    
+                                    <c:forEach var="employee" items="${employeeList}">
+                                        <option value="${employee.empId}" required class="form-control">${employee.empName}</option>
+                                    </c:forEach>
+                                </select>
                             </td>
                         </tr>
 
@@ -113,7 +94,7 @@
                             </td>
                             <td>
                                 <button class="btn btn-outline-dark" type="submit" name="action" value="add">Add</button>
-                                <a class="btn btn-outline-dark" href="<c:url value='supplier'/>">Cancel</a>
+                                <a class="btn btn-outline-dark" href="<c:url value='import'/>">Cancel</a>
                             </td>
                         </tr>
                     </table>

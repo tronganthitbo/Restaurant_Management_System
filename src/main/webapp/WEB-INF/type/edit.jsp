@@ -12,7 +12,7 @@
     <head>
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>Edit Type</title>
+        <title>Edit Supplier</title>
         <meta name="description" content="Form to edit supplier information in the Yummy Restaurant admin panel.">
         <meta name="keywords" content="supplier edit, admin, restaurant management">
 
@@ -88,20 +88,20 @@
                                         <label for="name">Name</label>
                                     </th>
                                     <td>
-                                        <input type="text" name="name" id="name" value="<c:out value='${currentType.typeName}'/>" class="form-control" required>
+                                        <input type="text" name="name" id="name" value="<c:out value='${currentTpe.typeName}'/>" class="form-control" required>
                                     </td>
                                 </tr>
-                                
+
                                 <tr>
                                     <th>
                                         <label for="description">Description</label>
                                     </th>
                                     <td>
-                                        <input type="text" name="description" id="description" value="<c:out value='${currentType.description}'/>" class="form-control" required>
+                                        <input type="text" name="description" id="description" value="<c:out value='${currentType.description}'/>" class="form-control">
                                     </td>
                                 </tr>
 
-                                <input type="hidden" name="status" id="status" value="${currentType.status}">
+                                <input type="hidden" name="status" id="status" value="${currentSupplier.status}">
 
 
                                 <tr>
