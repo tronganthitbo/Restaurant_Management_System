@@ -115,7 +115,7 @@ public class ImportDAO extends DBContext {
     public Import getElementByID(int id) {
 
         try {
-            String query = "SELECT DISTINCT i.import_id, e.emp_name, s.contact_person, s.supplier_name, i.import_date "
+            String query = "SELECT i.import_id, e.emp_name, s.contact_person, s.supplier_name, i.import_date "
                     + "FROM import i "
                     + "JOIN employee e ON e.emp_id = i.emp_id "
                     + "JOIN supplier s ON s.supplier_id = i.supplier_id  "

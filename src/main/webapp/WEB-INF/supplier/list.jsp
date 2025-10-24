@@ -23,7 +23,7 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com" rel="preconnect">
         <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
         <!-- Vendor CSS Files -->
         <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -95,13 +95,6 @@
                                             <span class="input-group-text"><i class="bi bi-search"></i></span>
                                             <input type="search" class="form-control" placeholder="Search by customer or ID">
                                         </div>
-                                        <select class="form-select">
-                                            <option selected>All statuses</option>
-                                            <option>Pending</option>
-                                            <option>Preparing</option>
-                                            <option>Completed</option>
-                                            <option>Cancelled</option>
-                                        </select>
                                         <a class="btn btn-primary add-btn" href="<c:url value="supplier">
                                                <c:param name="view" value="add"/>
                                            </c:url>"><i class="bi bi-plus-circle"></i> Add</a>
@@ -144,15 +137,14 @@
 
                                                         <td class="text-end">
                                                             <div class="action-button-group d-flex justify-content-end gap-2">
-                                                                <button type="button" class="btn btn-outline-secondary btn-icon btn-edit" title="Edit" aria-label="Edit">
+                                                                <a href="<c:url value='/supplier'>
+                                                                       <c:param name='view' value='edit'/>
+                                                                       <c:param name='id' value='${supplier.supplierId}'/>
+                                                                   </c:url>"
+                                                                   class="btn btn-outline-secondary btn-icon btn-edit"
+                                                                   title="Edit" aria-label="Edit">
                                                                     <i class="bi bi-pencil"></i>
-                                                                    <a href="<c:url value="supplier">
-                                                                           <c:param name="view" value="edit"/>
-                                                                           <c:param name="id" value="${supplier.supplierId}"/>
-                                                                       </c:url>">
-
-                                                                    </a>
-                                                                </button>
+                                                                </a>
                                                                 <button type="button" class="btn btn-outline-secondary btn-icon btn-delete" title="Delete" aria-label="Delete" onclick="showDeletePopup(${supplier.supplierId})">
                                                                     <i class="bi bi-x-circle"></i>
                                                                 </button>

@@ -95,13 +95,6 @@
                                             <span class="input-group-text"><i class="bi bi-search"></i></span>
                                             <input type="search" class="form-control" placeholder="Search by customer or ID">
                                         </div>
-                                        <select class="form-select">
-                                            <option selected>All statuses</option>
-                                            <option>Pending</option>
-                                            <option>Preparing</option>
-                                            <option>Completed</option>
-                                            <option>Cancelled</option>
-                                        </select>
                                         <a class="btn btn-primary add-btn" href="<c:url value="type">
                                                <c:param name="view" value="add"/>
                                            </c:url>"><i class="bi bi-plus-circle"></i> Add</a>

@@ -93,15 +93,8 @@
                                     <div class="filters d-flex flex-wrap gap-2 justify-content-end">
                                         <div class="search-box input-group">
                                             <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                            <input type="search" class="form-control" placeholder="Search by customer or ID">
+                                            <input type="search" class="form-control" placeholder="Search">
                                         </div>
-                                        <select class="form-select">
-                                            <option selected>All statuses</option>
-                                            <option>Pending</option>
-                                            <option>Preparing</option>
-                                            <option>Completed</option>
-                                            <option>Cancelled</option>
-                                        </select>
                                         <a class="btn btn-primary add-btn" href="<c:url value="import">
                                                <c:param name="view" value="add"/>
                                            </c:url>"><i class="bi bi-plus-circle"></i> Add</a>

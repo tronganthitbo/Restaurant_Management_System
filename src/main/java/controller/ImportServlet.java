@@ -95,6 +95,8 @@ public class ImportServlet extends HttpServlet {
             }
 
             request.setAttribute("currentImport", importDAO.getElementByID(id));
+            request.setAttribute("supplierList", supplierDAO.getAll());
+            request.setAttribute("employeeList", employeeDAO.getAll());
         } else if (view.equalsIgnoreCase("detail")) {
             namepage = "detail";
 
