@@ -4,9 +4,15 @@
  */
 package controller;
 
-import static constant.CommonFunction.*;
+import static constant.CommonFunction.addEDtoEverything;
+import static constant.CommonFunction.getSqlErrorCode;
+import static constant.CommonFunction.getTotalPages;
+import static constant.CommonFunction.removePopup;
+import static constant.CommonFunction.setPopup;
+import static constant.CommonFunction.validateInteger;
+import static constant.CommonFunction.validateString;
 import constant.Constants;
-import dao.TableDAO;
+import dao.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,12 +23,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Dai Minh Nhu - CE190213
+ * @author Administrator
  */
-@WebServlet(name = "TableServlet", urlPatterns = {"/table"})
-public class TableServlet extends HttpServlet {
+@WebServlet(name = "CustomerServlet", urlPatterns = {"/customer"})
+public class CustomerServlet extends HttpServlet {
 
-    TableDAO tableDAO = new TableDAO();
+    CustomerDAO customerDAO = new CustomerDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +47,10 @@ public class TableServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RoleServlet</title>");
+            out.println("<title>Servlet CustomerServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RoleServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CustomerServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,6 +70,7 @@ public class TableServlet extends HttpServlet {
             throws ServletException, IOException {
         String namepage = "";
         String view = request.getParameter("view");
+
         String keyword = request.getParameter("keyword");
         if (keyword == null) {
             keyword = "";
@@ -75,19 +82,22 @@ public class TableServlet extends HttpServlet {
             namepage = "add";
         } else if (view.equalsIgnoreCase("edit")) {
             namepage = "edit";
+
             int id;
+
             try {
                 id = Integer.parseInt(request.getParameter("id"));
             } catch (NumberFormatException e) {
                 id = -1;
             }
-            request.setAttribute("currentTable", tableDAO.getElementByID(id));
+
+            request.setAttribute("currentCustomer", customerDAO.getElementByID(id));
         } else if (view.equalsIgnoreCase("delete")) {
             namepage = "delete";
         }
 
         int page;
-        int totalPages = getTotalPages(tableDAO.countItem());
+        int totalPages = getTotalPages(customerDAO.countItem());
 
         try {
             page = Integer.parseInt(request.getParameter("page"));
@@ -96,12 +106,9 @@ public class TableServlet extends HttpServlet {
         }
 
         request.setAttribute("totalPages", totalPages);
-        request.setAttribute("keyword", keyword);
-        request.setAttribute("tablesList", tableDAO.getAll(page, keyword));
+        request.setAttribute("customerList", customerDAO.getAll(page, keyword));
 
-        request.getRequestDispatcher("/WEB-INF/table/" + namepage + ".jsp").forward(request, response);
-
-        // Xóa popup sau khi hiển thị
+        request.getRequestDispatcher("/WEB-INF/customer/" + namepage + ".jsp").forward(request, response);
         removePopup(request);
     }
 
@@ -117,63 +124,41 @@ public class TableServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+
         boolean popupStatus = true;
         String popupMessage = "";
 
         if (action != null && !action.isEmpty()) {
+
             if (action.equalsIgnoreCase("add")) {
-                String number = request.getParameter("number");
-                int capacity;
-                try {
-                    capacity = Integer.parseInt(request.getParameter("table_capacity"));
-                } catch (NumberFormatException e) {
-                    capacity = -1;
-                }
+                String cusAccount = request.getParameter("customerAccount");
+                String password = request.getParameter("password");
+                String cusName = request.getParameter("customerName");
 
-                // validate
-                if (!validateString(number, 10) || !validateInteger(capacity, false, false, true)) {
+                //validate
+                if (!validateString(cusAccount, -1)
+                        || !validateString(password, -1)
+                        || !validateString(cusName, -1)) {
                     popupStatus = false;
-                    popupMessage = "The add action is NOT successful. Invalid input.";
+                    popupMessage = "The add action is NOT successfull. The input has some error.";
                 } else {
-                    int result = tableDAO.add(number, capacity);
-                    if (result >= 1) {
-                        popupMessage = "Table " + number + " added successfully.";
+                    popupMessage = "The object with name=" + cusName + " added successfull"
+                            + "(Account: " + cusAccount + "; "
+                            + "Password: " + password + ")";
+                }
+                //end
+
+                password = constant.HashUtil.toMD5(password);
+
+                if (popupStatus == true) {
+                    int checkError = customerDAO.add(cusAccount, password, cusName);
+                    if (checkError >= 1) {
                     } else {
                         popupStatus = false;
-                        popupMessage = "The add action failed. SQL Error: " + getSqlErrorCode(result);
+                        popupMessage = "The add action is NOT successfull. The object has " + getSqlErrorCode(checkError) + " error.";
                     }
                 }
-
-            } else if (action.equalsIgnoreCase("edit")) {
-                int id;
-                String number = request.getParameter("number");
-                int capacity;
-
-                try {
-                    id = Integer.parseInt(request.getParameter("id"));
-                    capacity = Integer.parseInt(request.getParameter("table_capacity"));
-                } catch (NumberFormatException e) {
-                    id = -1;
-                    capacity = -1;
-                }
-
-                // validate
-                if (!validateInteger(id, false, false, true)
-                        || !validateString(number, 10)
-                        || !validateInteger(capacity, false, false, true)) {
-                    popupStatus = false;
-                    popupMessage = "The edit action is NOT successful. Invalid input.";
-                } else {
-                    int result = tableDAO.edit(id, number, capacity);
-                    if (result >= 1) {
-                        popupMessage = "Table with ID=" + id + " edited successfully.";
-                    } else {
-                        popupStatus = false;
-                        popupMessage = "The edit action failed. SQL Error: " + getSqlErrorCode(result);
-                    }
-                }
-
-            } else if (action.equalsIgnoreCase("delete")) {
+            } else if (action.equalsIgnoreCase("updateStatus")) {
                 int id;
                 try {
                     id = Integer.parseInt(request.getParameter("id"));
@@ -181,25 +166,51 @@ public class TableServlet extends HttpServlet {
                     id = -1;
                 }
 
-                // validate
                 if (!validateInteger(id, false, false, true)) {
                     popupStatus = false;
-                    popupMessage = "The delete action is NOT successful. Invalid ID.";
+                    popupMessage = "Invalid ID.";
                 } else {
-                    int result = tableDAO.delete(id);
-                    if (result >= 1) {
-                        popupMessage = "Table with ID=" + id + " deleted successfully.";
+                    int checkError = customerDAO.updateStatus(id);
+                    if (checkError >= 1) {
+                        popupStatus = true;
+                        popupMessage = "Customer status updated successfully!";
                     } else {
                         popupStatus = false;
-                        popupMessage = "The delete action failed. SQL Error: " + getSqlErrorCode(result);
+                        popupMessage = "Failed to update status. SQL error: " + getSqlErrorCode(checkError);
+                    }
+                }
+            } else if (action.equalsIgnoreCase("delete")) {
+                int id;
+
+                try {
+                    id = Integer.parseInt(request.getParameter("id"));
+                } catch (NumberFormatException e) {
+                    id = -1;
+                }
+
+                //validate
+                if (!validateInteger(id, false, false, true)) {
+                    popupStatus = false;
+                    popupMessage = "The delete action is NOT successfull.";
+                } else {
+                    popupMessage = "The object with id=" + id + " deleted successfull.";
+                }
+                //end
+                if (popupStatus == true) {
+                    int checkError = customerDAO.delete(id);
+
+                    if (checkError >= 1) {
+
+                    } else {
+                        popupStatus = false;
+                        popupMessage = "The delete action is NOT successfull. The object has " + getSqlErrorCode(checkError) + " error.";
                     }
                 }
             }
+            setPopup(request, popupStatus, popupMessage);
+            response.sendRedirect(request.getContextPath() + "/customer");
         }
-
-        setPopup(request, popupStatus, popupMessage);
-        response.sendRedirect(request.getContextPath() + "/table");
-        }
+    }
 
     /**
      * Returns a short description of the servlet.

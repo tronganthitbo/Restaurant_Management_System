@@ -29,6 +29,10 @@ CREATE TABLE category (
     CONSTRAINT PK_category PRIMARY KEY (category_id)
 );
 
+CREATE UNIQUE INDEX UX_category_name_not_deleted
+ON category(category_name)
+WHERE status <> 'deleted';
+
 CREATE TABLE role (
     role_id INT IDENTITY(1,1) NOT NULL,
     role_name NVARCHAR(50) NOT NULL,
@@ -43,14 +47,21 @@ WHERE status <> 'deleted';
 
 CREATE TABLE customer (
     customer_id INT IDENTITY(1,1) NOT NULL,
+	customer_account NVARCHAR(50) NOT NULL,
+    password NVARCHAR(255) NOT NULL,
     customer_name NVARCHAR(100) NOT NULL,
-    phone_number VARCHAR(19) NOT NULL,
+	gender NVARCHAR(10) NULL,
+    dob DATE NULL,
+    phone_number VARCHAR(19) NULL,
     email NVARCHAR(255) NULL,
     address NVARCHAR(255) NULL,
-    date_of_birth DATE NULL,
     status NVARCHAR(20) NOT NULL DEFAULT 'Active',
     CONSTRAINT PK_customer PRIMARY KEY (customer_id)
 );
+
+CREATE UNIQUE INDEX UX_customer_account_not_deleted
+ON customer(customer_account)
+WHERE status <> 'deleted';
 
 CREATE TABLE [table] (
     table_id INT IDENTITY(1,1) NOT NULL,
@@ -59,6 +70,10 @@ CREATE TABLE [table] (
     status VARCHAR(20) NOT NULL DEFAULT 'Available',
     CONSTRAINT PK_tables PRIMARY KEY (table_id)
 );
+
+CREATE UNIQUE INDEX UX_table_number_not_deleted
+ON [table](table_number)
+WHERE status <> 'deleted';
 
 CREATE TABLE ingredient (
     ingredient_id INT IDENTITY(1,1) NOT NULL,
@@ -69,6 +84,10 @@ CREATE TABLE ingredient (
     CONSTRAINT PK_ingredient PRIMARY KEY (ingredient_id),
     CONSTRAINT FK_type FOREIGN KEY (type_id) REFERENCES type(type_id)
 );
+
+CREATE UNIQUE INDEX UX_ingredient_name_not_deleted
+ON ingredient(ingredient_name)
+WHERE status <> 'deleted';
 
 CREATE TABLE employee (
     emp_id INT IDENTITY(1,1) NOT NULL,
@@ -90,18 +109,30 @@ CREATE UNIQUE INDEX UX_employee_account_not_deleted
 ON employee(emp_account)
 WHERE status <> 'deleted';
 
+CREATE TABLE recipe (
+    recipe_id INT IDENTITY(1,1) NOT NULL,
+    recipe_name NVARCHAR(100) NOT NULL,
+    status NVARCHAR(20) NOT NULL DEFAULT 'Active',
+    CONSTRAINT PK_recipe PRIMARY KEY (recipe_id)
+);
+
 CREATE TABLE menu_item (
     menu_item_id INT IDENTITY(1,1) NOT NULL,
     category_id INT NOT NULL,
+    recipe_id INT NOT NULL,
     item_name NVARCHAR(100) NOT NULL,
-    ingredients NVARCHAR(255) NULL,
     image_url NVARCHAR(255) NULL,
-    price DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    price INT NOT NULL DEFAULT 0,
     description NVARCHAR(255) NULL,
     status NVARCHAR(20) NOT NULL DEFAULT 'Active',
     CONSTRAINT PK_menu_item PRIMARY KEY (menu_item_id),
-    CONSTRAINT FK_category FOREIGN KEY (category_id) REFERENCES category(category_id)
+    CONSTRAINT FK_category FOREIGN KEY (category_id) REFERENCES category(category_id),
+    CONSTRAINT FK_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id)
 );
+
+CREATE UNIQUE INDEX UX_item_name_not_deleted
+ON menu_item(item_name)
+WHERE status <> 'deleted';
 
 CREATE TABLE reservation (
     reservation_id INT IDENTITY(1,1) NOT NULL,
@@ -121,13 +152,12 @@ CREATE TABLE voucher (
     voucher_code NVARCHAR(50) NOT NULL,
     voucher_name NVARCHAR(100) NOT NULL,
     discount_type NVARCHAR(20) NOT NULL,
-    discount_value DECIMAL(10,2) NOT NULL,
+    discount_value INT NOT NULL,
     quantity INT NOT NULL DEFAULT 1,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     status NVARCHAR(20) NOT NULL DEFAULT 'Active',
-    CONSTRAINT PK_voucher PRIMARY KEY (voucher_id),
-    CONSTRAINT UQ_voucher_code UNIQUE (voucher_code)
+    CONSTRAINT PK_voucher PRIMARY KEY (voucher_id)
 );
 
 CREATE UNIQUE INDEX UX_voucher_code_not_deleted
@@ -172,13 +202,9 @@ CREATE TABLE order_item (
     CONSTRAINT FK_order_item_menu FOREIGN KEY (menu_item_id) REFERENCES menu_item(menu_item_id)
 );
 
-CREATE TABLE recipe (
-    recipe_id INT IDENTITY(1,1) NOT NULL,
-    menu_item_id INT NOT NULL,
-    status NVARCHAR(20) NOT NULL DEFAULT 'Active',
-    CONSTRAINT PK_recipe PRIMARY KEY (recipe_id),
-    CONSTRAINT FK_recipe_menu FOREIGN KEY (menu_item_id) REFERENCES menu_item(menu_item_id)
-);
+CREATE UNIQUE INDEX UX_recipe_name_not_deleted
+ON recipe(recipe_name)
+WHERE status <> 'deleted';
 
 CREATE TABLE recipe_item (
     recipe_item_id INT IDENTITY(1,1) NOT NULL,
@@ -193,7 +219,6 @@ CREATE TABLE recipe_item (
     CONSTRAINT FK_recipe_item_ingredient FOREIGN KEY (ingredient_id) REFERENCES ingredient(ingredient_id)
 );
 
-
 CREATE TABLE supplier (
     supplier_id INT IDENTITY(1,1) PRIMARY KEY,
     supplier_name NVARCHAR(100) NOT NULL,
@@ -204,6 +229,9 @@ CREATE TABLE supplier (
     status NVARCHAR(20)
 );
 
+CREATE UNIQUE INDEX UX_supplier_name_not_deleted
+ON supplier(supplier_name)
+WHERE status <> 'deleted';
 
 CREATE TABLE import (
     import_id INT IDENTITY(1,1) PRIMARY KEY,
@@ -211,10 +239,8 @@ CREATE TABLE import (
     emp_id INT NOT NULL,
     import_date DATETIME NOT NULL DEFAULT GETDATE(),
     status NVARCHAR(20),
-    CONSTRAINT FK_Import_Supplier FOREIGN KEY (supplier_id)
-        REFERENCES Supplier(supplier_id),
-    CONSTRAINT FK_Import_Employee FOREIGN KEY (emp_id)
-        REFERENCES Employee(emp_id)   
+    CONSTRAINT FK_Import_Supplier FOREIGN KEY (supplier_id) REFERENCES Supplier(supplier_id),
+    CONSTRAINT FK_Import_Employee FOREIGN KEY (emp_id) REFERENCES Employee(emp_id)   
 );
 
 CREATE TABLE import_detail (
