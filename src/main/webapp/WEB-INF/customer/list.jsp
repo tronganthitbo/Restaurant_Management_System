@@ -69,14 +69,15 @@
                                     <td><c:out value="${customer.status}"/></td>
                                     <td class="text-end">
                                         <div class="action-button-group d-flex justify-content-end gap-2">
-                                            <a class="btn btn-outline-secondary btn-icon btn-edit"
-                                               title="Edit" aria-label="Edit"
-                                               href="<c:url value='customer'>
-                                                   <c:param name='view' value='edit'/>
-                                                   <c:param name='id' value='${customer.customerId}'/>
-                                               </c:url>">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
+                                            <form action="<c:url value='customer'/>" method="post" style="display:inline;">
+                                                <input type="hidden" name="action" value="updateStatus">
+                                                <input type="hidden" name="id" value="${customer.customerId}">
+                                                <button type="submit" class="btn btn-outline-primary btn-icon"
+                                                        title="Update Status" aria-label="Update Status">
+                                                    <i class="bi ${customer.status == 'Active' ? 'bi-person-x' : 'bi-person-check'}"></i>
+                                                </button>
+                                            </form>
+
                                             <button type="button" class="btn btn-outline-secondary btn-icon btn-delete"
                                                     title="Delete" aria-label="Delete"
                                                     onclick="showDeletePopup('${customer.customerId}')">
