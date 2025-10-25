@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.Date;
 import model.Employee;
 
@@ -63,20 +64,24 @@ public class Profile_EmployeeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        int empId;
-//        try {
-//            empId = Integer.parseInt(request.getParameter("id"));
-//        } catch (NumberFormatException e) {
-//            response.sendRedirect(request.getContextPath() + "/login");
-//            return;
-//        }
-        Employee currentUser = (Employee) request.getSession().getAttribute("currentUser");
-        if (currentUser == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("employeeSession") == null) {
+            response.sendRedirect("login");
             return;
         }
-        request.setAttribute("currentUser", currentUser);
-        request.getRequestDispatcher("/WEB-INF/profile/profile.jsp").forward(request, response);
+
+        Employee employee = (Employee) session.getAttribute("employeeSession");
+        String action = request.getParameter("action");
+
+        if (action == null || action.equalsIgnoreCase("view")) {
+            request.setAttribute("employee", employee);
+            request.getRequestDispatcher("/WEB-INF/emp_profile/view.jsp").forward(request, response);
+        } else if (action.equalsIgnoreCase("edit")) {
+            request.setAttribute("employee", employee);
+            request.getRequestDispatcher("/WEB-INF/emp_profile/edit.jsp").forward(request, response);
+        } else if (action.equalsIgnoreCase("change-password")) {
+            request.getRequestDispatcher("/WEB-INF/emp_profile/changepassword.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -90,70 +95,115 @@ public class Profile_EmployeeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        int empId;
-//        try {
-//            empId = Integer.parseInt(request.getParameter("id"));
-//        } catch (NumberFormatException e) {
-//            response.sendRedirect(request.getContextPath() + "/login");
-//            return;
-//        }
-        Employee currentUser = (Employee) request.getSession().getAttribute("currentUser");
-        if (currentUser == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("employeeSession") == null) {
+            response.sendRedirect("login");
             return;
         }
-        int empId = currentUser.getEmpId();
+
+        Employee employee = (Employee) session.getAttribute("employeeSession");
         String action = request.getParameter("action");
-        boolean success = true;
-        String message = "";
 
-        if ("updateInfo".equalsIgnoreCase(action)) {
-            String empAccount = request.getParameter("empAccount");
-            String empName = request.getParameter("empName");
-            String gender = request.getParameter("gender");
-            String dobStr = request.getParameter("dob"); // yyyy-mm-dd
-            String phoneNumber = request.getParameter("phone");
-            String email = request.getParameter("email");
-            String address = request.getParameter("address");
+        if ("edit".equalsIgnoreCase(action)) {
+            updateProfile(request, response, session, employee);
+        } else if ("change-password".equalsIgnoreCase(action)) {
+            changePassword(request, response, session, employee);
+        }
+    }
 
-            Date dob = null;
-            try {
-                if (dobStr != null && !dobStr.isEmpty()) {
-                    dob = Date.valueOf(dobStr);
-                }
-            } catch (IllegalArgumentException e) {
-                success = false;
-                message = "Invalid date format.";
-            }
+    private void updateProfile(HttpServletRequest request, HttpServletResponse response,
+            HttpSession session, Employee employee)
+            throws ServletException, IOException {
 
-            if (success) {
-                int result = employeeDAO.edit(empId, empAccount, empName, gender, dob, phoneNumber, email, address);
-                success = result >= 1;
-                message = success ? "Update information successful." : "Update failed.";
-            }
+        String empAccount = request.getParameter("empAccount");
+        String empName = request.getParameter("empName");
+        String gender = request.getParameter("gender");
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
+        String address = request.getParameter("address");
+        String dobStr = request.getParameter("dob");
 
-        } else if ("changePassword".equalsIgnoreCase(action)) {
-            String oldPassword = request.getParameter("oldPassword");
-            String newPassword = request.getParameter("newPassword");
+        Date dob = null;
+        if (dobStr != null && !dobStr.isEmpty()) {
+            dob = Date.valueOf(dobStr);
+        }
 
-            String currentHashed = employeeDAO.getElementByID(empId).getPassword();
-            if (!currentHashed.equals(HashUtil.toMD5(oldPassword))) {
-                success = false;
-                message = "Old password is incorrect.";
-            } else {
-                int result = employeeDAO.edit(empId, HashUtil.toMD5(newPassword));
-                success = result >= 1;
-                message = success ? "Password changed successfully." : "Password change failed.";
+        int result = employeeDAO.edit(
+                employee.getEmpId(),
+                empAccount,
+                empName,
+                gender,
+                dob,
+                phone,
+                email,
+                address
+        );
+
+        if (result > 0) {
+            // Lấy lại dữ liệu mới từ DB
+            Employee updated = employeeDAO.getElementByID(employee.getEmpId());
+            // Cập nhật session
+            session.setAttribute("employeeSession", updated);
+            session.setAttribute("successMessage", "Profile updated successfully.");
+
+            // Redirect về trang view
+            response.sendRedirect(request.getContextPath() + "/emp_profileEmployee?action=view");
+        } else {
+            request.setAttribute("errorMessage", "Failed to update emp_profile.");
+            request.setAttribute("employee", employee);
+            request.getRequestDispatcher("/WEB-INF/emp_profile/edit.jsp").forward(request, response);
+        }
+    }
+
+    private void changePassword(HttpServletRequest request, HttpServletResponse response,
+            HttpSession session, Employee employee)
+            throws ServletException, IOException {
+
+        String oldPassword = request.getParameter("oldPassword");
+        String newPassword = request.getParameter("newPassword");
+        String confirmPassword = request.getParameter("confirmPassword");
+
+        String errorMessage = null;
+
+        // --- Validation ---
+        if (oldPassword == null || newPassword == null || confirmPassword == null
+                || oldPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
+            errorMessage = "Please fill all fields.";
+        }
+
+        if (errorMessage == null) {
+            String hashedOld = HashUtil.toMD5(oldPassword);
+            if (!hashedOld.equals(employee.getPassword())) {
+                errorMessage = "Old password is incorrect.";
             }
         }
 
-        request.setAttribute("profilePopupStatus", success);
-        request.setAttribute("profilePopupMessage", message);
-//        request.setAttribute("currentUser", employeeDAO.getElementByID(empId));
-        Employee updatedUser = employeeDAO.getElementByID(empId);
-        request.getSession().setAttribute("currentUser", updatedUser);
-        request.setAttribute("currentUser", updatedUser);
-        request.getRequestDispatcher("/WEB-INF/profile/profile.jsp").forward(request, response);
+        if (errorMessage == null) {
+            if (!newPassword.equals(confirmPassword)) {
+                errorMessage = "New password and confirmation do not match.";
+            }
+        }
+
+        if (errorMessage == null) {
+            // Cập nhật mật khẩu
+            String hashedNew = HashUtil.toMD5(newPassword);
+            int result = employeeDAO.edit(employee.getEmpId(), hashedNew);
+
+            if (result > 0) {
+                employee.setPassword(hashedNew);
+                session.setAttribute("employeeSession", employee);
+                session.setAttribute("successMessage", "Password changed successfully.");
+
+                response.sendRedirect(request.getContextPath() + "/profileEmployee?action=view");
+                return;
+            } else {
+                errorMessage = "Failed to change password. Database error.";
+            }
+        }
+
+        // Nếu có lỗi thì quay lại trang đổi mật khẩu
+        request.setAttribute("errorMessage", errorMessage);
+        request.getRequestDispatcher("/WEB-INF/emp_profile/changepassword.jsp").forward(request, response);
     }
 
     /**
